@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace LGYtechStockApp.Models
 {
@@ -11,6 +8,9 @@ namespace LGYtechStockApp.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+
+        [StringLength(50)]
+        [Required]
         public string Sku { get; set; }
 
         [Range(typeof(decimal), "0.01", "79228162514264337593543950335", ErrorMessage = "Price must be a positive value.")]
