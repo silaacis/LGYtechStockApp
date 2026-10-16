@@ -13,7 +13,7 @@ namespace LGYtechStockApp.Models
         [Required]
         public string Sku { get; set; }
 
-        [Range(typeof(decimal), "0.01", "79228162514264337593543950335", ErrorMessage = "Price must be a positive value.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be a positive value.")]
         public decimal Price { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Stock must be a non-negative value.")]

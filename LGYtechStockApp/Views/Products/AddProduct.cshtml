@@ -1,0 +1,267 @@
+﻿@model LGYtechStockApp.ViewModels.ProductFormViewModel
+
+@{
+    ViewBag.Title = "Yeni Ürün";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4 px-3 px-md-4 product-page">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <div class="text-muted small mb-1">STOK YÖNETİMİ / ÜRÜNLER / YENİ ÜRÜN</div>
+            <h2 class="page-title mb-1">Yeni Ürün Ekle</h2>
+            <p class="text-muted mb-0">Yeni ürünün bilgilerini ve stok miktarını gir.</p>
+        </div>
+
+        <a href="@Url.Action("ProductList", "Products")"
+           class="btn btn-back mt-3 mt-md-0">
+            &larr; Ürün Listesine Dön
+        </a>
+    </div>
+
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="d-flex align-items-center">
+                <div class="form-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <div>
+                    <h5 class="mb-1 font-weight-bold">Ürün Bilgileri</h5>
+                    <span class="text-muted small">Yıldız (*) bulunan alanların doldurulması zorunludur.</span>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("AddProduct", "Products", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-body">
+
+                <div class="form-group">
+                    <label for="Name" class="form-label">Ürün Adı *</label>
+                    <input type="text"
+                           id="Name"
+                           name="Name"
+                           class="form-control custom-input"
+                           placeholder="Örn. Kalem"
+                           value="@Model.Name" />
+
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "field-error" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Sku" class="form-label">SKU *</label>
+                    <input type="text"
+                           id="Sku"
+                           name="Sku"
+                           class="form-control custom-input"
+                           placeholder="Örn. URUN-006"
+                           value="@Model.Sku" />
+
+                    @Html.ValidationMessageFor(m => m.Sku, "", new { @class = "field-error" })
+                    <small class="form-hint">Her ürün için benzersiz bir stok kodu gir.</small>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Price" class="form-label">Birim Fiyat (₺) *</label>
+                            <input type="number"
+                                   id="Price"
+                                   name="Price"
+                                   class="form-control custom-input"
+                                   step="0.01"
+                                   min="0.01"
+                                   placeholder="Örn. 25.00"
+                                   value="@Model.Price" />
+
+                            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "field-error" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Stock" class="form-label">Başlangıç Stoğu *</label>
+                            <input type="number"
+                                   id="Stock"
+                                   name="Stock"
+                                   class="form-control custom-input"
+                                   min="0"
+                                   step="1"
+                                   placeholder="Örn. 100"
+                                   value="@Model.Stock" />
+
+                            @Html.ValidationMessageFor(m => m.Stock, "", new { @class = "field-error" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-footer">
+                <a href="@Url.Action("ProductList", "Products")" class="btn btn-cancel">
+                    Vazgeç
+                </a>
+
+                <button type="submit" class="btn btn-save">
+                    <i class="fas fa-check mr-1"></i> Ürünü Kaydet
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .product-page {
+        background: #f7f8fc;
+        min-height: calc(100vh - 60px);
+        color: #202938;
+    }
+
+    .page-title {
+        font-size: 27px;
+        font-weight: 700;
+        letter-spacing: -0.6px;
+    }
+
+    .btn-back {
+        background: #fff;
+        color: #536078;
+        border: 1px solid #e2e7ef;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-weight: 600;
+    }
+
+        .btn-back:hover,
+        .btn-cancel:hover {
+            background: #f2f4f8;
+            color: #263247;
+        }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #edf0f5;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 3px 12px rgba(28, 39, 60, 0.025);
+        max-width: 900px;
+    }
+
+    .form-card-header {
+        padding: 22px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .form-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #edf1ff;
+        color: #3659d9;
+        border-radius: 10px;
+        font-size: 18px;
+        margin-right: 14px;
+    }
+
+    .form-body {
+        padding: 25px 24px 10px;
+    }
+
+    .form-label {
+        display: block;
+        color: #344054;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .custom-input {
+        height: 44px;
+        border: 1px solid #e2e7ef;
+        border-radius: 8px;
+        padding: 10px 13px;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+        .custom-input:focus {
+            border-color: #7890ec;
+            box-shadow: 0 0 0 3px rgba(54, 89, 217, 0.08);
+        }
+
+    .form-hint {
+        display: block;
+        color: #929bad;
+        font-size: 11px;
+        margin-top: 6px;
+    }
+
+    .field-error {
+        display: block;
+        color: #c8444c;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .validation-summary {
+        color: #c8444c;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+        .validation-summary:empty {
+            display: none;
+        }
+
+    .form-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 18px 24px;
+        border-top: 1px solid #edf0f5;
+        background: #fcfcfe;
+    }
+
+    .btn-cancel,
+    .btn-save {
+        border-radius: 8px;
+        padding: 10px 17px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .btn-cancel {
+        background: #fff;
+        color: #536078;
+        border: 1px solid #e2e7ef;
+    }
+
+    .btn-save {
+        background: #3659d9;
+        color: #fff;
+        border: 1px solid #3659d9;
+        box-shadow: 0 4px 10px rgba(54, 89, 217, 0.12);
+    }
+
+        .btn-save:hover {
+            background: #2948bd;
+            color: #fff;
+        }
+
+    @@media (max-width: 767px) {
+        .form-card-header,
+        .form-body {
+            padding: 18px 16px;
+        }
+
+        .form-footer {
+            padding: 15px 16px;
+        }
+    }
+</style>
+
