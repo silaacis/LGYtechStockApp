@@ -1,0 +1,633 @@
+﻿@model LGYtechStockApp.ViewModels.CreateOrderViewModel
+
+@{
+    ViewBag.Title = "Yeni Sipariş";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .order-page {
+        max-width: 1100px;
+        margin: 30px auto;
+        color: #202b3c;
+    }
+
+    .order-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .order-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .order-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: #eaf0ff;
+        color: #3659d9;
+        font-size: 25px;
+    }
+
+    .order-heading h2 {
+        font-size: 25px;
+        font-weight: 700;
+        margin: 0 0 6px;
+        letter-spacing: -.5px;
+    }
+
+    .order-heading p {
+        color: #7a8495;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .order-back {
+        color: #596579;
+        border: 1px solid #e1e6ee;
+        background: #fff;
+        border-radius: 9px;
+        padding: 10px 15px;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+        .order-back:hover {
+            background: #f6f8fc;
+            color: #3659d9;
+        }
+
+    .order-card {
+        background: #fff;
+        border: 1px solid #e7ebf2;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(30,48,80,.035);
+    }
+
+    .order-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .order-card-title {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .order-card-subtitle {
+        color: #8490a2;
+        font-size: 12px;
+        margin: 5px 0 0;
+    }
+
+    .order-card-body {
+        padding: 24px;
+    }
+
+    .order-label {
+        display: block;
+        color: #455166;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .order-input {
+        width: 100%;
+        height: 43px;
+        padding: 10px 12px;
+        border: 1px solid #dfe5ee;
+        border-radius: 8px;
+        background: #fff;
+        color: #253148;
+        font-size: 13px;
+        outline: none;
+        transition: border-color .2s,box-shadow .2s;
+    }
+
+        .order-input:focus {
+            border-color: #6481ec;
+            box-shadow: 0 0 0 3px rgba(54,89,217,.09);
+        }
+
+        .order-input:disabled {
+            background: #f6f8fb;
+        }
+
+    .customer-hint {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #8a94a5;
+    }
+
+    .order-count {
+        padding: 6px 10px;
+        border-radius: 7px;
+        background: #eef2ff;
+        color: #3659d9;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .order-table-wrap {
+        overflow-x: auto;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .order-table thead {
+            background: #f8faff;
+        }
+
+        .order-table th {
+            padding: 13px 18px;
+            color: #7a8699;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            text-align: left;
+            border-bottom: 1px solid #edf0f5;
+            white-space: nowrap;
+        }
+
+        .order-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #f0f2f6;
+            vertical-align: middle;
+        }
+
+        .order-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .order-table select, .order-table input {
+            min-width: 110px;
+        }
+
+    .product-cell {
+        min-width: 250px;
+    }
+
+    .quantity-cell {
+        width: 140px;
+    }
+
+    .stock-label {
+        display: inline-block;
+        margin-top: 10px;
+        color: #8490a2;
+        font-size: 11px;
+    }
+
+    .remove-line {
+        width: 35px;
+        height: 35px;
+        border: 1px solid #f0dada;
+        background: #fff;
+        color: #c35454;
+        border-radius: 8px;
+        font-size: 17px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .remove-line:hover {
+            background: #fff1f1;
+            border-color: #e9bcbc;
+        }
+
+    .add-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border: 1px solid #dce4ff;
+        background: #f5f7ff;
+        color: #3659d9;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .add-line:hover {
+            background: #eaf0ff;
+            border-color: #bfcdfd;
+        }
+
+    .order-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 24px;
+        border-top: 1px solid #edf0f5;
+        background: #fcfdff;
+    }
+
+    .order-footer-note {
+        color: #8490a2;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .order-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-order-cancel, .btn-order-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 10px 17px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none !important;
+        cursor: pointer;
+        transition: .2s;
+        white-space: nowrap;
+    }
+
+    .btn-order-cancel {
+        background: #fff;
+        border: 1px solid #dfe5ee;
+        color: #596579;
+    }
+
+        .btn-order-cancel:hover {
+            background: #f5f7fa;
+            color: #263247;
+        }
+
+    .btn-order-submit {
+        border: 1px solid #3659d9;
+        background: #3659d9;
+        color: #fff;
+    }
+
+        .btn-order-submit:hover {
+            background: #2948bd;
+            border-color: #2948bd;
+            color: #fff;
+        }
+
+        .btn-order-submit:disabled {
+            opacity: .65;
+            cursor: wait;
+        }
+
+    .order-validation {
+        margin-bottom: 18px;
+        color: #bd4141;
+        font-size: 13px;
+    }
+
+    .field-validation-error {
+        display: block;
+        color: #bd4141;
+        font-size: 11px;
+        margin-top: 5px;
+    }
+
+    .order-message {
+        display: none;
+        margin-bottom: 18px;
+        padding: 14px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+        .order-message.success {
+            background: #eaf8ef;
+            color: #237746;
+            border: 1px solid #c7ecd4;
+        }
+
+        .order-message.error {
+            background: #fff0f0;
+            color: #b42323;
+            border: 1px solid #f1cccc;
+        }
+
+    @@media (max-width:700px) {
+        .order-page {
+            margin: 20px 10px;
+        }
+
+        .order-header {
+            align-items: flex-start;
+        }
+
+        .order-heading h2 {
+            font-size: 21px;
+        }
+
+        .order-card-header, .order-card-body {
+            padding: 17px;
+        }
+
+        .order-footer {
+            align-items: stretch;
+            flex-direction: column;
+            padding: 17px;
+        }
+
+        .order-actions {
+            width: 100%;
+        }
+
+            .order-actions a, .order-actions button {
+                flex: 1;
+            }
+    }
+</style>
+
+<div class="order-page">
+    <div class="order-header">
+        <div class="order-heading">
+            <div class="order-icon">&#128722;</div>
+            <div>
+                <h2>Yeni Sipariş</h2>
+                <p>Sipariş bilgilerini girin ve ürünleri belirleyin.</p>
+            </div>
+        </div>
+
+        <a href="@Url.Action("OrderList", "Orders")" class="order-back">
+            &larr; Siparişlere Dön
+        </a>
+    </div>
+
+    @using (Html.BeginForm("CreateOrder", "Orders", FormMethod.Post, new { id = "orderForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "order-validation" })
+
+        <div id="orderMessage" class="order-message" role="alert" aria-live="polite"></div>
+
+        <div class="order-card">
+            <div class="order-card-header">
+                <div>
+                    <h3 class="order-card-title">Müşteri Bilgileri</h3>
+                    <p class="order-card-subtitle">Siparişin kime ait olduğunu belirtin.</p>
+                </div>
+                <span class="order-count">01 / Müşteri</span>
+            </div>
+
+            <div class="order-card-body">
+                <div style="max-width:560px;">
+                    <label for="CustomerName" class="order-label">
+                        Müşteri Adı <span style="color:#d9534f;">*</span>
+                    </label>
+
+                    <input type="text" id="CustomerName" name="CustomerName"
+                           class="order-input" maxlength="100"
+                           placeholder="Müşterinin adını girin" required />
+
+                    @Html.ValidationMessageFor(m => m.CustomerName)
+
+                    <div class="customer-hint">Sipariş kaydında bu isim kullanılacaktır.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-card">
+            <div class="order-card-header">
+                <div>
+                    <h3 class="order-card-title">Sipariş Ürünleri</h3>
+                    <p class="order-card-subtitle">Siparişe eklenecek ürünleri ve adetlerini seçin.</p>
+                </div>
+                <span class="order-count" id="lineCount">1 ürün satırı</span>
+            </div>
+
+            <div class="order-table-wrap">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th style="width:70px;">İşlem</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="orderLines">
+                        <tr class="order-line">
+                            <td class="product-cell">
+                                <select name="OrderLines[0].ProductId"
+                                        class="order-input product-select" required>
+                                    <option value="">Ürün seçin</option>
+                                    @foreach (var product in Model.Products)
+                                    {
+                                        <option value="@product.Id" data-stock="@product.Stock">
+                                            @product.Name
+                                        </option>
+                                    }
+                                </select>
+                                <span class="stock-label">Ürün seçildiğinde mevcut stok gösterilir.</span>
+                            </td>
+
+                            <td class="quantity-cell">
+                                <input type="number" name="OrderLines[0].Quantity"
+                                       class="order-input quantity-input"
+                                       min="1" step="1" value="1" required />
+                            </td>
+
+                            <td>
+                                <button type="button" class="remove-line"
+                                        title="Satırı sil" aria-label="Satırı sil">
+                                    &times;
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="padding:18px 24px;">
+                <button type="button" id="addLine" class="add-line">
+                    <span style="font-size:17px;">+</span> Ürün Satırı Ekle
+                </button>
+            </div>
+
+            <div class="order-footer">
+                <div class="order-footer-note">
+                    <strong style="color:#4c586d;">Sipariş kontrolü</strong><br />
+                    Stok yeterliliği, sipariş kaydedilirken sunucu tarafında kontrol edilecektir.
+                </div>
+
+                <div class="order-actions">
+                    <a href="@Url.Action("OrderList", "Orders")" class="btn-order-cancel">İptal</a>
+                    <button type="submit" class="btn-order-submit">
+                        Siparişi Ver <span>&rarr;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+            function updateLineCount() {
+                var count = $("#orderLines .order-line").length;
+                $("#lineCount").text(count + " ürün satırı");
+            }
+
+            function updateIndexes() {
+                $("#orderLines .order-line").each(function (index) {
+                    $(this).find(".product-select")
+                        .attr("name", "OrderLines[" + index + "].ProductId");
+
+                    $(this).find(".quantity-input")
+                        .attr("name", "OrderLines[" + index + "].Quantity");
+                });
+
+                updateLineCount();
+            }
+
+            $("#addLine").on("click", function () {
+                var newLine = $("#orderLines .order-line:first").clone();
+
+                newLine.find(".product-select").val("");
+                newLine.find(".quantity-input").val(1);
+                newLine.find(".stock-label")
+                    .text("Ürün seçildiğinde mevcut stok gösterilir.");
+
+                $("#orderLines").append(newLine);
+                updateIndexes();
+            });
+
+            $("#orderLines").on("click", ".remove-line", function () {
+                if ($("#orderLines .order-line").length > 1) {
+                    $(this).closest(".order-line").remove();
+                    updateIndexes();
+                }
+            });
+
+            $("#orderLines").on("change", ".product-select", function () {
+                var selected = $(this).find("option:selected");
+                var stock = selected.attr("data-stock");
+                var label = $(this).closest("td").find(".stock-label");
+
+                if (stock !== undefined) {
+                    label.text("Mevcut stok: " + stock + " adet");
+                } else {
+                    label.text("Ürün seçildiğinde mevcut stok gösterilir.");
+                }
+            });
+
+            $("#orderForm").on("submit", function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var submitButton = form.find(".btn-order-submit");
+                var message = $("#orderMessage");
+
+                message.removeClass("success error").hide().text("");
+
+                // Tarayıcının zorunlu alan kontrollerini de koru.
+                if (this.checkValidity && !this.checkValidity()) {
+                    this.reportValidity();
+                    return;
+                }
+
+                submitButton.prop("disabled", true).text("Kaydediliyor...");
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: form.serialize(),
+                    dataType: "json",
+
+                    success: function (response) {
+                        if (response && response.success) {
+                            message
+                                .removeClass("error")
+                                .addClass("success")
+                                .text("Sipariş #" + response.orderId +
+                                    " başarıyla oluşturuldu.")
+                                .show();
+
+                            // Başarılı siparişten sonra formu temizle.
+                            $("#CustomerName").val("");
+                            $("#orderLines .order-line").not(":first").remove();
+
+                            var firstLine = $("#orderLines .order-line:first");
+                            firstLine.find(".product-select").val("");
+                            firstLine.find(".quantity-input").val(1);
+                            firstLine.find(".stock-label")
+                                .text("Ürün seçildiğinde mevcut stok gösterilir.");
+
+                            updateIndexes();
+                        } else {
+                            message
+                                .removeClass("success")
+                                .addClass("error")
+                                .text(response && response.message
+                                    ? response.message
+                                    : "Sipariş oluşturulamadı.")
+                                .show();
+                        }
+                    },
+
+                    error: function (xhr) {
+                        var errorMessage =
+                            "İstek tamamlanamadı. Lütfen tekrar deneyin.";
+
+                        if (xhr.status === 400) {
+                            errorMessage =
+                                "İstek reddedildi. Anti-forgery token veya gönderilen verileri kontrol edin.";
+                        } else if (xhr.status === 500) {
+                            errorMessage =
+                                "Sunucu hatası oluştu. Uygulama hata kayıtlarını kontrol edin.";
+                        }
+
+                        message
+                            .removeClass("success")
+                            .addClass("error")
+                            .text(errorMessage)
+                            .show();
+                    },
+
+                    complete: function () {
+                        submitButton
+                            .prop("disabled", false)
+                            .html('Siparişi Ver <span>&rarr;</span>');
+                    }
+                });
+            });
+
+            updateLineCount();
+        });
+    </script>
+}

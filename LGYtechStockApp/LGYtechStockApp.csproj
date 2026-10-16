@@ -157,6 +157,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Data\StockDbContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -176,6 +177,9 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\StockMovement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CreateOrderViewModel.cs" />
+    <Compile Include="ViewModels\OrderLineViewModel.cs" />
+    <Compile Include="ViewModels\OrderListViewModel.cs" />
     <Compile Include="ViewModels\ProductFormViewModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
   </ItemGroup>
@@ -233,6 +237,8 @@
     <Content Include="Views\Products\ProductList.cshtml" />
     <Content Include="Views\Products\AddProduct.cshtml" />
     <Content Include="Views\Products\EditProduct.cshtml" />
+    <Content Include="Views\Orders\CreateOrder.cshtml" />
+    <Content Include="Views\Orders\OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
