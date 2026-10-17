@@ -5,552 +5,698 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .order-page {
-        max-width: 1100px;
-        margin: 30px auto;
-        color: #202b3c;
-    }
+<div class="co-page">
 
-    .order-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 28px;
-    }
-
-    .order-heading {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-
-    .order-icon {
-        width: 54px;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 15px;
-        background: #eaf0ff;
-        color: #3659d9;
-        font-size: 25px;
-    }
-
-    .order-heading h2 {
-        font-size: 25px;
-        font-weight: 700;
-        margin: 0 0 6px;
-        letter-spacing: -.5px;
-    }
-
-    .order-heading p {
-        color: #7a8495;
-        font-size: 13px;
-        margin: 0;
-    }
-
-    .order-back {
-        color: #596579;
-        border: 1px solid #e1e6ee;
-        background: #fff;
-        border-radius: 9px;
-        padding: 10px 15px;
-        text-decoration: none !important;
-        font-size: 13px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-        .order-back:hover {
-            background: #f6f8fc;
-            color: #3659d9;
-        }
-
-    .order-card {
-        background: #fff;
-        border: 1px solid #e7ebf2;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        overflow: hidden;
-        box-shadow: 0 4px 18px rgba(30,48,80,.035);
-    }
-
-    .order-card-header {
-        padding: 20px 24px;
-        border-bottom: 1px solid #edf0f5;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-    }
-
-    .order-card-title {
-        font-size: 15px;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .order-card-subtitle {
-        color: #8490a2;
-        font-size: 12px;
-        margin: 5px 0 0;
-    }
-
-    .order-card-body {
-        padding: 24px;
-    }
-
-    .order-label {
-        display: block;
-        color: #455166;
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 9px;
-    }
-
-    .order-input {
-        width: 100%;
-        height: 43px;
-        padding: 10px 12px;
-        border: 1px solid #dfe5ee;
-        border-radius: 8px;
-        background: #fff;
-        color: #253148;
-        font-size: 13px;
-        outline: none;
-        transition: border-color .2s,box-shadow .2s;
-    }
-
-        .order-input:focus {
-            border-color: #6481ec;
-            box-shadow: 0 0 0 3px rgba(54,89,217,.09);
-        }
-
-        .order-input:disabled {
-            background: #f6f8fb;
-        }
-
-    .customer-hint {
-        margin-top: 8px;
-        font-size: 12px;
-        color: #8a94a5;
-    }
-
-    .order-count {
-        padding: 6px 10px;
-        border-radius: 7px;
-        background: #eef2ff;
-        color: #3659d9;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .order-table-wrap {
-        overflow-x: auto;
-    }
-
-    .order-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .order-table thead {
-            background: #f8faff;
-        }
-
-        .order-table th {
-            padding: 13px 18px;
-            color: #7a8699;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            text-align: left;
-            border-bottom: 1px solid #edf0f5;
-            white-space: nowrap;
-        }
-
-        .order-table td {
-            padding: 16px 18px;
-            border-bottom: 1px solid #f0f2f6;
-            vertical-align: middle;
-        }
-
-        .order-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .order-table select, .order-table input {
-            min-width: 110px;
-        }
-
-    .product-cell {
-        min-width: 250px;
-    }
-
-    .quantity-cell {
-        width: 140px;
-    }
-
-    .stock-label {
-        display: inline-block;
-        margin-top: 10px;
-        color: #8490a2;
-        font-size: 11px;
-    }
-
-    .remove-line {
-        width: 35px;
-        height: 35px;
-        border: 1px solid #f0dada;
-        background: #fff;
-        color: #c35454;
-        border-radius: 8px;
-        font-size: 17px;
-        cursor: pointer;
-        transition: .2s;
-    }
-
-        .remove-line:hover {
-            background: #fff1f1;
-            border-color: #e9bcbc;
-        }
-
-    .add-line {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 11px 18px;
-        border: 1px solid #dce4ff;
-        background: #f5f7ff;
-        color: #3659d9;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: .2s;
-    }
-
-        .add-line:hover {
-            background: #eaf0ff;
-            border-color: #bfcdfd;
-        }
-
-    .order-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 18px;
-        padding: 20px 24px;
-        border-top: 1px solid #edf0f5;
-        background: #fcfdff;
-    }
-
-    .order-footer-note {
-        color: #8490a2;
-        font-size: 12px;
-        line-height: 1.6;
-    }
-
-    .order-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .btn-order-cancel, .btn-order-submit {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        min-height: 42px;
-        padding: 10px 17px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        text-decoration: none !important;
-        cursor: pointer;
-        transition: .2s;
-        white-space: nowrap;
-    }
-
-    .btn-order-cancel {
-        background: #fff;
-        border: 1px solid #dfe5ee;
-        color: #596579;
-    }
-
-        .btn-order-cancel:hover {
-            background: #f5f7fa;
-            color: #263247;
-        }
-
-    .btn-order-submit {
-        border: 1px solid #3659d9;
-        background: #3659d9;
-        color: #fff;
-    }
-
-        .btn-order-submit:hover {
-            background: #2948bd;
-            border-color: #2948bd;
-            color: #fff;
-        }
-
-        .btn-order-submit:disabled {
-            opacity: .65;
-            cursor: wait;
-        }
-
-    .order-validation {
-        margin-bottom: 18px;
-        color: #bd4141;
-        font-size: 13px;
-    }
-
-    .field-validation-error {
-        display: block;
-        color: #bd4141;
-        font-size: 11px;
-        margin-top: 5px;
-    }
-
-    .order-message {
-        display: none;
-        margin-bottom: 18px;
-        padding: 14px 16px;
-        border-radius: 9px;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-        .order-message.success {
-            background: #eaf8ef;
-            color: #237746;
-            border: 1px solid #c7ecd4;
-        }
-
-        .order-message.error {
-            background: #fff0f0;
-            color: #b42323;
-            border: 1px solid #f1cccc;
-        }
-
-    @@media (max-width:700px) {
-        .order-page {
-            margin: 20px 10px;
-        }
-
-        .order-header {
-            align-items: flex-start;
-        }
-
-        .order-heading h2 {
-            font-size: 21px;
-        }
-
-        .order-card-header, .order-card-body {
-            padding: 17px;
-        }
-
-        .order-footer {
-            align-items: stretch;
-            flex-direction: column;
-            padding: 17px;
-        }
-
-        .order-actions {
-            width: 100%;
-        }
-
-            .order-actions a, .order-actions button {
-                flex: 1;
-            }
-    }
-</style>
-
-<div class="order-page">
-    <div class="order-header">
-        <div class="order-heading">
-            <div class="order-icon">&#128722;</div>
-            <div>
-                <h2>Yeni Sipariş</h2>
-                <p>Sipariş bilgilerini girin ve ürünleri belirleyin.</p>
-            </div>
+    <div class="co-header">
+        <div>
+            <div class="co-crumb">Stok Yönetimi <span>/</span> Siparişler <span>/</span> Yeni Sipariş</div>
+            <h1 class="co-title">Yeni Sipariş</h1>
+            <p class="co-desc">Sipariş bilgilerini girin ve ürünleri belirleyin.</p>
         </div>
 
-        <a href="@Url.Action("OrderList", "Orders")" class="order-back">
-            &larr; Siparişlere Dön
+        <a href="@Url.Action("OrderList", "Orders")" class="co-btn-back">
+            <i class="fas fa-arrow-left"></i> Siparişlere Dön
         </a>
     </div>
 
     @using (Html.BeginForm("CreateOrder", "Orders", FormMethod.Post, new { id = "orderForm" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(false, "", new { @class = "order-validation" })
+        @Html.ValidationSummary(false, "", new { @class = "co-validation" })
 
-        <div id="orderMessage" class="order-message" role="alert" aria-live="polite"></div>
+        <div id="orderMessage" class="co-message" role="alert" aria-live="polite"></div>
 
-        <div class="order-card">
-            <div class="order-card-header">
-                <div>
-                    <h3 class="order-card-title">Müşteri Bilgileri</h3>
-                    <p class="order-card-subtitle">Siparişin kime ait olduğunu belirtin.</p>
+        <div class="co-grid">
+
+            <div class="co-main">
+
+                <!-- Müşteri -->
+                <div class="co-card">
+                    <div class="co-card-head">
+                        <div class="co-card-icon"><i class="fas fa-user"></i></div>
+                        <div>
+                            <h2 class="co-card-title">Müşteri Bilgileri</h2>
+                            <span class="co-card-sub">Siparişin kime ait olduğunu belirtin.</span>
+                        </div>
+                    </div>
+
+                    <div class="co-card-body">
+                        <label for="CustomerName" class="co-label">Müşteri Adı <span class="co-req">*</span></label>
+                        <input type="text" id="CustomerName" name="CustomerName"
+                               class="co-input" maxlength="100" autocomplete="off"
+                               placeholder="Müşterinin adını girin" required />
+                        @Html.ValidationMessageFor(m => m.CustomerName, "", new { @class = "co-error" })
+                        <small class="co-hint">Sipariş kaydında bu isim kullanılacaktır.</small>
+                    </div>
                 </div>
-                <span class="order-count">01 / Müşteri</span>
-            </div>
 
-            <div class="order-card-body">
-                <div style="max-width:560px;">
-                    <label for="CustomerName" class="order-label">
-                        Müşteri Adı <span style="color:#d9534f;">*</span>
-                    </label>
+                <!-- Ürünler -->
+                <div class="co-card">
+                    <div class="co-card-head">
+                        <div class="co-card-icon"><i class="fas fa-box"></i></div>
+                        <div class="co-grow">
+                            <h2 class="co-card-title">Sipariş Ürünleri</h2>
+                            <span class="co-card-sub">Siparişe eklenecek ürünleri ve adetlerini seçin.</span>
+                        </div>
+                        <span class="co-pill" id="lineCount">1 ürün satırı</span>
+                    </div>
 
-                    <input type="text" id="CustomerName" name="CustomerName"
-                           class="order-input" maxlength="100"
-                           placeholder="Müşterinin adını girin" required />
+                    <div class="co-lines-head">
+                        <span>Ürün</span>
+                        <span>Adet</span>
+                        <span></span>
+                    </div>
 
-                    @Html.ValidationMessageFor(m => m.CustomerName)
-
-                    <div class="customer-hint">Sipariş kaydında bu isim kullanılacaktır.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="order-card">
-            <div class="order-card-header">
-                <div>
-                    <h3 class="order-card-title">Sipariş Ürünleri</h3>
-                    <p class="order-card-subtitle">Siparişe eklenecek ürünleri ve adetlerini seçin.</p>
-                </div>
-                <span class="order-count" id="lineCount">1 ürün satırı</span>
-            </div>
-
-            <div class="order-table-wrap">
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>Ürün</th>
-                            <th>Adet</th>
-                            <th style="width:70px;">İşlem</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="orderLines">
-                        <tr class="order-line">
-                            <td class="product-cell">
-                                <select name="OrderLines[0].ProductId"
-                                        class="order-input product-select" required>
+                    <div id="orderLines">
+                        <div class="co-line">
+                            <div class="co-line-product">
+                                <select name="OrderLines[0].ProductId" class="co-input co-select" required>
                                     <option value="">Ürün seçin</option>
                                     @foreach (var product in Model.Products)
                                     {
-                                        <option value="@product.Id" data-stock="@product.Stock">
-                                            @product.Name
-                                        </option>
+                                        <option value="@product.Id" data-stock="@product.Stock">@product.Name</option>
                                     }
                                 </select>
-                                <span class="stock-label">Ürün seçildiğinde mevcut stok gösterilir.</span>
-                            </td>
+                                <span class="co-stock-label">Ürün seçildiğinde mevcut stok gösterilir.</span>
+                            </div>
 
-                            <td class="quantity-cell">
-                                <input type="number" name="OrderLines[0].Quantity"
-                                       class="order-input quantity-input"
+                            <div class="co-line-qty">
+                                <input type="number" name="OrderLines[0].Quantity" class="co-input co-qty"
                                        min="1" step="1" value="1" required />
-                            </td>
+                            </div>
 
-                            <td>
-                                <button type="button" class="remove-line"
-                                        title="Satırı sil" aria-label="Satırı sil">
-                                    &times;
+                            <div class="co-line-remove">
+                                <button type="button" class="co-remove" title="Satırı sil" aria-label="Satırı sil">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div style="padding:18px 24px;">
-                <button type="button" id="addLine" class="add-line">
-                    <span style="font-size:17px;">+</span> Ürün Satırı Ekle
-                </button>
-            </div>
-
-            <div class="order-footer">
-                <div class="order-footer-note">
-                    <strong style="color:#4c586d;">Sipariş kontrolü</strong><br />
-                    Stok yeterliliği, sipariş kaydedilirken sunucu tarafında kontrol edilecektir.
+                    <div class="co-add-wrap">
+                        <button type="button" id="addLine" class="co-add">
+                            <i class="fas fa-plus"></i> Ürün Satırı Ekle
+                        </button>
+                    </div>
                 </div>
 
-                <div class="order-actions">
-                    <a href="@Url.Action("OrderList", "Orders")" class="btn-order-cancel">İptal</a>
-                    <button type="submit" class="btn-order-submit">
-                        Siparişi Ver <span>&rarr;</span>
-                    </button>
-                </div>
             </div>
+
+            <!-- Özet -->
+            <aside class="co-aside">
+                <div class="co-card co-summary">
+                    <div class="co-aside-label">Sipariş Özeti</div>
+
+                    <div class="co-sum-row"><span>Müşteri</span><strong id="sumCustomer">—</strong></div>
+                    <div class="co-sum-row"><span>Ürün satırı</span><strong id="sumLines">1</strong></div>
+                    <div class="co-sum-row"><span>Toplam adet</span><strong id="sumQty">1</strong></div>
+
+                    <div class="co-actions">
+                        <button type="submit" class="co-btn-submit">
+                            <i class="fas fa-check"></i> Siparişi Ver
+                        </button>
+                        <a href="@Url.Action("OrderList", "Orders")" class="co-btn-cancel">İptal</a>
+                    </div>
+                </div>
+
+                <div class="co-tip">
+                    <i class="fas fa-info-circle"></i>
+                    <div><strong>Sipariş kontrolü</strong><br />Stok yeterliliği, sipariş kaydedilirken sunucu tarafında kontrol edilir.</div>
+                </div>
+            </aside>
+
         </div>
     }
 </div>
 
+<style>
+    .co-page {
+        color: var(--ink);
+    }
+
+    /* Header */
+    .co-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .co-crumb {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+    }
+
+        .co-crumb span {
+            margin: 0 4px;
+            opacity: .5;
+        }
+
+    .co-title {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.7px;
+        margin: 0 0 4px;
+    }
+
+    .co-desc {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .co-btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #536078 !important;
+        background: #fff;
+        border: 1px solid var(--line);
+        text-decoration: none !important;
+        transition: background .15s;
+    }
+
+        .co-btn-back:hover {
+            background: #f2f4f9;
+        }
+
+        .co-btn-back i {
+            font-size: 12px;
+        }
+
+    /* Layout */
+    .co-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .co-main {
+        min-width: 0;
+    }
+
+    .co-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(27, 36, 55, 0.04);
+        margin-bottom: 20px;
+    }
+
+    .co-card-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .co-card-icon {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 16px;
+        color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    .co-grow {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .co-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 3px;
+        letter-spacing: -0.2px;
+    }
+
+    .co-card-sub {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .co-card-body {
+        padding: 24px;
+    }
+
+    .co-pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary);
+        background: var(--primary-soft);
+        white-space: nowrap;
+    }
+
+    /* Inputs */
+    .co-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #344054;
+        margin: 0 0 8px;
+    }
+
+    .co-req {
+        color: #e5525c;
+    }
+
+    .co-input {
+        display: block;
+        width: 100%;
+        height: 46px;
+        padding: 0 14px;
+        margin: 0;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--ink);
+        background: #f6f8fc;
+        border: 1px solid #f6f8fc;
+        border-radius: 10px;
+        outline: none;
+        transition: background .15s, border-color .15s, box-shadow .15s;
+    }
+
+        .co-input::placeholder {
+            color: #a3acbd;
+        }
+
+        .co-input:focus {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+        }
+
+        .co-input.input-validation-error {
+            background: #fff7f7;
+            border-color: #e5525c;
+        }
+
+    .co-hint {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #9aa4b6;
+    }
+
+    .co-error, .field-validation-error.co-error {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #c63f49;
+    }
+
+    .co-validation {
+        margin-bottom: 16px;
+        color: #c63f49;
+        font-size: 13px;
+    }
+
+        .co-validation ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    /* Lines */
+    .co-lines-head, .co-line {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 150px 48px;
+        gap: 16px;
+        align-items: start;
+        padding: 0 24px;
+    }
+
+    .co-lines-head {
+        padding-top: 14px;
+        padding-bottom: 12px;
+        background: #fafbfe;
+        border-bottom: 1px solid var(--line);
+    }
+
+        .co-lines-head span {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            color: #8590a3;
+        }
+
+    .co-line {
+        padding-top: 18px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #f1f3f8;
+    }
+
+    .co-line-product, .co-line-qty {
+        min-width: 0;
+    }
+
+    .co-stock-label {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #9aa4b6;
+    }
+
+        .co-stock-label.ok {
+            color: #178457;
+        }
+
+        .co-stock-label.low {
+            color: #a8680a;
+        }
+
+        .co-stock-label.empty {
+            color: #c63f49;
+        }
+
+    .co-remove {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #f3dcdf;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #d1535d;
+        background: #fff;
+        cursor: pointer;
+        transition: background .15s, border-color .15s;
+    }
+
+        .co-remove:hover {
+            background: #fff2f3;
+            border-color: #e9b9bf;
+        }
+
+    .co-add-wrap {
+        padding: 18px 24px 22px;
+    }
+
+    .co-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--primary);
+        background: var(--primary-soft);
+        border: 1px dashed #b9c6fb;
+        cursor: pointer;
+        transition: background .15s, border-color .15s;
+    }
+
+        .co-add:hover {
+            background: #e3e9ff;
+            border-color: var(--primary);
+        }
+
+        .co-add i {
+            font-size: 11px;
+        }
+
+    /* Summary */
+    .co-aside {
+        position: sticky;
+        top: 88px;
+    }
+
+    .co-summary {
+        padding: 22px;
+        margin-bottom: 16px;
+    }
+
+    .co-aside-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        color: #8590a3;
+        margin-bottom: 8px;
+    }
+
+    .co-sum-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 0;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid #f1f3f8;
+    }
+
+        .co-sum-row strong {
+            color: var(--ink);
+            font-size: 14px;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 60%;
+        }
+
+    .co-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .co-btn-submit, .co-btn-cancel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 46px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none !important;
+        transition: all .15s;
+    }
+
+    .co-btn-submit {
+        color: #fff;
+        border: 0;
+        background: linear-gradient(135deg, #4361ee, #6a4df0);
+        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.28);
+    }
+
+        .co-btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.36);
+        }
+
+        .co-btn-submit:disabled {
+            opacity: .65;
+            cursor: wait;
+            transform: none;
+        }
+
+    .co-btn-cancel {
+        color: #536078 !important;
+        background: #fff;
+        border: 1px solid var(--line);
+    }
+
+        .co-btn-cancel:hover {
+            background: #f2f4f9;
+        }
+
+    .co-tip {
+        display: flex;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #4a5670;
+        background: var(--primary-soft);
+    }
+
+        .co-tip i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .co-tip strong {
+            color: var(--ink);
+        }
+
+    /* Message */
+    .co-message {
+        display: none;
+        margin-bottom: 18px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .co-message.success {
+            color: #178457;
+            background: #e7f7ee;
+            border: 1px solid #c5ebd6;
+        }
+
+        .co-message.error {
+            color: #b42323;
+            background: #fff0f0;
+            border: 1px solid #f1cccc;
+        }
+
+    @@media (max-width: 991px) {
+        .co-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .co-aside {
+            position: static;
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .co-title {
+            font-size: 24px;
+        }
+
+        .co-card-head, .co-card-body, .co-add-wrap {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .co-lines-head {
+            display: none;
+        }
+
+        .co-line {
+            grid-template-columns: 1fr 48px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .co-line-product {
+            grid-column: 1 / -1;
+        }
+
+        .co-line-qty {
+            grid-column: 1;
+        }
+
+        .co-line-remove {
+            grid-column: 2;
+        }
+    }
+</style>
+
 @section scripts {
     <script>
         $(function () {
-            function updateLineCount() {
-                var count = $("#orderLines .order-line").length;
+            var defaultHint = "Ürün seçildiğinde mevcut stok gösterilir.";
+
+            function updateSummary() {
+                var count = $("#orderLines .co-line").length;
+                var total = 0;
+
+                $("#orderLines .co-qty").each(function () {
+                    var v = parseInt($(this).val(), 10);
+                    if (!isNaN(v) && v > 0) { total += v; }
+                });
+
+                var name = $.trim($("#CustomerName").val());
+
                 $("#lineCount").text(count + " ürün satırı");
+                $("#sumLines").text(count);
+                $("#sumQty").text(total);
+                $("#sumCustomer").text(name || "—");
             }
 
             function updateIndexes() {
-                $("#orderLines .order-line").each(function (index) {
-                    $(this).find(".product-select")
-                        .attr("name", "OrderLines[" + index + "].ProductId");
-
-                    $(this).find(".quantity-input")
-                        .attr("name", "OrderLines[" + index + "].Quantity");
+                $("#orderLines .co-line").each(function (index) {
+                    $(this).find(".co-select").attr("name", "OrderLines[" + index + "].ProductId");
+                    $(this).find(".co-qty").attr("name", "OrderLines[" + index + "].Quantity");
                 });
+                updateSummary();
+            }
 
-                updateLineCount();
+            function resetLine(line) {
+                line.find(".co-select").val("");
+                line.find(".co-qty").val(1).removeAttr("max");
+                line.find(".co-stock-label").removeClass("ok low empty").text(defaultHint);
             }
 
             $("#addLine").on("click", function () {
-                var newLine = $("#orderLines .order-line:first").clone();
-
-                newLine.find(".product-select").val("");
-                newLine.find(".quantity-input").val(1);
-                newLine.find(".stock-label")
-                    .text("Ürün seçildiğinde mevcut stok gösterilir.");
-
+                var newLine = $("#orderLines .co-line:first").clone();
+                resetLine(newLine);
                 $("#orderLines").append(newLine);
                 updateIndexes();
             });
 
-            $("#orderLines").on("click", ".remove-line", function () {
-                if ($("#orderLines .order-line").length > 1) {
-                    $(this).closest(".order-line").remove();
+            $("#orderLines").on("click", ".co-remove", function () {
+                if ($("#orderLines .co-line").length > 1) {
+                    $(this).closest(".co-line").remove();
                     updateIndexes();
                 }
             });
 
-            $("#orderLines").on("change", ".product-select", function () {
-                var selected = $(this).find("option:selected");
-                var stock = selected.attr("data-stock");
-                var label = $(this).closest("td").find(".stock-label");
+            $("#orderLines").on("change", ".co-select", function () {
+                var line = $(this).closest(".co-line");
+                var stock = $(this).find("option:selected").attr("data-stock");
+                var label = line.find(".co-stock-label");
+                var qty = line.find(".co-qty");
 
-                if (stock !== undefined) {
-                    label.text("Mevcut stok: " + stock + " adet");
+                label.removeClass("ok low empty");
+
+                if (stock !== undefined && stock !== "") {
+                    var s = parseInt(stock, 10);
+                    label.text("Mevcut stok: " + s + " adet");
+                    label.addClass(s === 0 ? "empty" : (s <= 5 ? "low" : "ok"));
+                    qty.attr("max", s);
                 } else {
-                    label.text("Ürün seçildiğinde mevcut stok gösterilir.");
+                    label.text(defaultHint);
+                    qty.removeAttr("max");
                 }
             });
+
+            $("#orderLines").on("input change", ".co-qty", updateSummary);
+            $("#CustomerName").on("input", updateSummary);
 
             $("#orderForm").on("submit", function (e) {
                 e.preventDefault();
 
                 var form = $(this);
-                var submitButton = form.find(".btn-order-submit");
+                var submitButton = form.find(".co-btn-submit");
                 var message = $("#orderMessage");
 
                 message.removeClass("success error").hide().text("");
@@ -574,96 +720,42 @@
                             message
                                 .removeClass("error")
                                 .addClass("success")
-                                .text("Sipariş #" + response.orderId +
-                                    " başarıyla oluşturuldu.")
+                                .text("Sipariş #" + response.orderId + " başarıyla oluşturuldu.")
                                 .show();
 
                             // Başarılı siparişten sonra formu temizle.
                             $("#CustomerName").val("");
-                            $("#orderLines .order-line").not(":first").remove();
-
-                            var firstLine = $("#orderLines .order-line:first");
-                            firstLine.find(".product-select").val("");
-                            firstLine.find(".quantity-input").val(1);
-                            firstLine.find(".stock-label")
-                                .text("Ürün seçildiğinde mevcut stok gösterilir.");
-
+                            $("#orderLines .co-line").not(":first").remove();
+                            resetLine($("#orderLines .co-line:first"));
                             updateIndexes();
                         } else {
                             message
                                 .removeClass("success")
                                 .addClass("error")
-                                .text(response && response.message
-                                    ? response.message
-                                    : "Sipariş oluşturulamadı.")
+                                .text(response && response.message ? response.message : "Sipariş oluşturulamadı.")
                                 .show();
                         }
                     },
 
                     error: function (xhr) {
-                        var errorMessage =
-                            "İstek tamamlanamadı. Lütfen tekrar deneyin.";
+                        var errorMessage = "İstek tamamlanamadı. Lütfen tekrar deneyin.";
 
                         if (xhr.status === 400) {
-                            errorMessage =
-                                "İstek reddedildi. Anti-forgery token veya gönderilen verileri kontrol edin.";
+                            errorMessage = "İstek reddedildi. Anti-forgery token veya gönderilen verileri kontrol edin.";
                         } else if (xhr.status === 500) {
-                            errorMessage =
-                                "Sunucu hatası oluştu. Uygulama hata kayıtlarını kontrol edin.";
+                            errorMessage = "Sunucu hatası oluştu. Uygulama hata kayıtlarını kontrol edin.";
                         }
 
-                        message
-                            .removeClass("success")
-                            .addClass("error")
-                            .text(errorMessage)
-                            .show();
+                        message.removeClass("success").addClass("error").text(errorMessage).show();
                     },
 
                     complete: function () {
-                        submitButton
-                            .prop("disabled", false)
-                            .html('Siparişi Ver <span>&rarr;</span>');
+                        submitButton.prop("disabled", false).html('<i class="fas fa-check"></i> Siparişi Ver');
                     }
                 });
             });
 
-            updateLineCount();
+            updateSummary();
         });
     </script>
 }
-<style>
-    .order-page { max-width:none; margin:0; color:var(--ink); }
-    .order-header { align-items:flex-end; margin-bottom:23px; }
-    .order-heading h2 { color:var(--ink); font-size:28px; letter-spacing:-.7px; }
-    .order-heading p { color:var(--muted); font-size:14px; }
-    .order-icon { border-radius:13px; color:#fff; background:linear-gradient(135deg,#4361ee,#7b5cf0); box-shadow:0 5px 14px rgba(67,97,238,.22); }
-    .order-back { border-color:var(--line); border-radius:10px; color:#536078; transition:background .15s,border-color .15s; }
-    .order-back:hover { border-color:#d6dced; background:#f8f9fc; color:var(--primary); }
-    .order-card { border-color:var(--line); border-radius:16px; box-shadow:0 4px 18px rgba(27,36,55,.04); }
-    .order-card-header { border-bottom-color:var(--line); }
-    .order-card-title { color:var(--ink); font-size:16px; }
-    .order-card-subtitle,.customer-hint { color:var(--muted); }
-    .order-count { border-radius:999px; color:var(--primary); background:var(--primary-soft); }
-    .order-label { color:#344054; }
-    .order-input { border-color:#e5e9f1; border-radius:9px; color:var(--ink); background:#f7f8fc; transition:border-color .15s,box-shadow .15s,background .15s; }
-    .order-input:focus { border-color:var(--primary); background:#fff; box-shadow:0 0 0 4px rgba(67,97,238,.11); }
-    .order-table thead { background:#fafbfe; }
-    .order-table th { color:#8590a3; font-size:11px; letter-spacing:.6px; }
-    .order-table td { border-bottom-color:#f1f3f8; }
-    .remove-line { border-color:#f0d9dc; border-radius:9px; color:#c84b55; transition:background .15s,border-color .15s; }
-    .remove-line:hover { border-color:#e9b9bf; background:#fff2f3; }
-    .add-line { border-color:#dce4ff; border-radius:9px; color:var(--primary); background:#f5f7ff; }
-    .add-line:hover { border-color:#bfcdfd; background:#eaf0ff; }
-    .order-footer { border-top-color:var(--line); background:#fcfdff; }
-    .order-footer-note { color:var(--muted); }
-    .btn-order-cancel,.btn-order-submit { min-height:44px; border-radius:10px; font-family:inherit; transition:transform .15s,box-shadow .15s,background .15s; }
-    .btn-order-cancel { border-color:var(--line); }
-    .btn-order-submit { border:0; background:linear-gradient(135deg,#4361ee,#6a4df0); box-shadow:0 6px 16px rgba(67,97,238,.24); }
-    .btn-order-submit:hover { transform:translateY(-1px); background:linear-gradient(135deg,#3b57dc,#6045dc); box-shadow:0 8px 20px rgba(67,97,238,.32); }
-    .order-message { border-radius:11px; }
-    @@media (max-width:767px) {
-        .order-page { margin:0; }
-        .order-heading h2 { font-size:24px; }
-        .order-header { align-items:flex-start; }
-    }
-</style>

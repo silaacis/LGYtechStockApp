@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<LGYtechStockApp.Models.StockMovement>
+﻿@model IEnumerable<LGYtechStockApp.Models.StockMovement>
 
 @{
     ViewBag.Title = "Stok Hareketleri";
@@ -9,613 +8,109 @@
                    ?? Enumerable.Empty<LGYtechStockApp.Models.Product>();
 
     int? selectedProductId = ViewBag.SelectedProductId as int?;
-    var movements = Model ?? Enumerable.Empty<LGYtechStockApp.Models.StockMovement>();
+    var movements = (Model ?? Enumerable.Empty<LGYtechStockApp.Models.StockMovement>()).ToList();
 
-    var movementCount = movements.Count();
-    var totalEntries = movements.Where(m => m.Change > 0).Sum(m => m.Change);
+    var movementCount = movements.Count;
+    var totalEntries = movements.Where(m => m.Change > 0).Sum(m => (long)m.Change);
     var totalExits = movements.Where(m => m.Change < 0).Sum(m => Math.Abs((long)m.Change));
 }
 
-<style>
-    .sm-page {
-        padding: 30px 0 45px;
-        color: #172b4d;
-    }
-
-    .sm-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-bottom: 28px;
-    }
-
-    .sm-eyebrow {
-        color: #3978d4;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 1.4px;
-        margin-bottom: 9px;
-    }
-
-    .sm-title {
-        color: #172b4d;
-        font-size: 29px;
-        font-weight: 750;
-        letter-spacing: -.7px;
-        margin: 0 0 9px;
-    }
-
-    .sm-subtitle {
-        color: #78869b;
-        font-size: 14px;
-        line-height: 1.7;
-        margin: 0;
-    }
-
-    .sm-primary-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        padding: 12px 17px;
-        border: 0;
-        border-radius: 10px;
-        background: #2864dc;
-        color: white !important;
-        font-size: 13px;
-        font-weight: 650;
-        text-decoration: none !important;
-        box-shadow: 0 5px 14px rgba(40,100,220,.17);
-        transition: .2s ease;
-        cursor: pointer;
-    }
-
-        .sm-primary-btn:hover {
-            background: #1e50ba;
-            transform: translateY(-1px);
-        }
-
-    .sm-secondary-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 11px 15px;
-        border: 1px solid #e1e8f2;
-        border-radius: 10px;
-        background: #fff;
-        color: #52647e !important;
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none !important;
-        transition: .2s ease;
-    }
-
-        .sm-secondary-btn:hover {
-            background: #f7f9fd;
-            border-color: #cbd7e9;
-        }
-
-    .sm-stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 17px;
-        margin-bottom: 24px;
-    }
-
-    .sm-stat-card {
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        min-width: 0;
-        padding: 22px;
-        background: #fff;
-        border: 1px solid #e8edf5;
-        border-radius: 15px;
-        box-shadow: 0 4px 18px rgba(30,55,90,.035);
-    }
-
-    .sm-stat-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        flex: 0 0 48px;
-        border-radius: 13px;
-        font-size: 23px;
-        font-weight: 600;
-    }
-
-    .sm-icon-blue {
-        background: #edf4ff;
-        color: #2864dc;
-    }
-
-    .sm-icon-green {
-        background: #e9f8f0;
-        color: #168451;
-    }
-
-    .sm-icon-red {
-        background: #fff0f0;
-        color: #d94c55;
-    }
-
-    .sm-stat-label {
-        color: #7c899e;
-        font-size: 12px;
-        margin-bottom: 6px;
-    }
-
-    .sm-stat-value {
-        color: #172b4d;
-        font-size: 25px;
-        line-height: 1.2;
-        font-weight: 750;
-        overflow-wrap: anywhere;
-    }
-
-    .sm-panel {
-        background: #fff;
-        border: 1px solid #e8edf5;
-        border-radius: 15px;
-        box-shadow: 0 4px 18px rgba(30,55,90,.035);
-        overflow: hidden;
-        margin-bottom: 23px;
-    }
-
-    .sm-filter-panel {
-        padding: 23px 24px;
-    }
-
-    .sm-filter-heading {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        margin-bottom: 20px;
-    }
-
-    .sm-filter-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-        border-radius: 10px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 18px;
-    }
-
-    .sm-filter-heading h2 {
-        margin: 0 0 4px;
-        color: #243650;
-        font-size: 15px;
-        font-weight: 750;
-    }
-
-    .sm-filter-heading p {
-        margin: 0;
-        color: #8995a8;
-        font-size: 12px;
-    }
-
-    .sm-filter-form {
-        display: flex;
-        align-items: flex-end;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .sm-filter-field {
-        flex: 1 1 260px;
-        max-width: 440px;
-    }
-
-        .sm-filter-field label {
-            display: block;
-            margin-bottom: 8px;
-            color: #52647e;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-    .sm-select {
-        width: 100%;
-        height: 44px;
-        padding: 0 13px;
-        color: #334761;
-        background-color: #fff;
-        border: 1px solid #dfe6f0;
-        border-radius: 9px;
-        font-size: 13px;
-        outline: none;
-        transition: border-color .2s, box-shadow .2s;
-    }
-
-        .sm-select:focus {
-            border-color: #6595ed;
-            box-shadow: 0 0 0 3px rgba(40,100,220,.09);
-        }
-
-    .sm-table-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        padding: 22px 24px;
-        border-bottom: 1px solid #edf0f5;
-        flex-wrap: wrap;
-    }
-
-    .sm-table-title {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-    }
-
-        .sm-table-title h2 {
-            color: #243650;
-            font-size: 16px;
-            font-weight: 750;
-            margin: 0 0 5px;
-        }
-
-        .sm-table-title p {
-            color: #8995a8;
-            font-size: 12px;
-            margin: 0;
-        }
-
-    .sm-count-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 7px 11px;
-        border-radius: 20px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 12px;
-        font-weight: 750;
-        white-space: nowrap;
-    }
-
-    .sm-table {
-        width: 100%;
-        margin: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-        .sm-table thead th {
-            padding: 15px 23px;
-            background: #f8faff;
-            color: #7b879b;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: .7px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .sm-table tbody td {
-            padding: 17px 23px;
-            border-top: 1px solid #f0f3f8;
-            color: #52647e;
-            font-size: 13px;
-            vertical-align: middle;
-        }
-
-        .sm-table tbody tr {
-            transition: background .15s;
-        }
-
-            .sm-table tbody tr:hover {
-                background: #f9fbff;
-            }
-
-    .sm-product {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        min-width: 140px;
-    }
-
-    .sm-product-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 37px;
-        height: 37px;
-        flex: 0 0 37px;
-        border-radius: 10px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 16px;
-        font-weight: 750;
-    }
-
-    .sm-product-name {
-        color: #243650;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .sm-date {
-        color: #64748b;
-        white-space: nowrap;
-    }
-
-        .sm-date small {
-            display: block;
-            margin-top: 4px;
-            color: #98a3b4;
-            font-size: 11px;
-        }
-
-    .sm-change {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        min-width: 76px;
-        padding: 7px 10px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 800;
-        white-space: nowrap;
-    }
-
-    .sm-change-in {
-        background: #eaf8f0;
-        color: #168451;
-    }
-
-    .sm-change-out {
-        background: #fff0f0;
-        color: #d94c55;
-    }
-
-    .sm-change-neutral {
-        background: #f0f4fa;
-        color: #52647e;
-    }
-
-    .sm-reason {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        color: #52647e;
-        line-height: 1.5;
-        overflow-wrap: anywhere;
-    }
-
-    .sm-reason-dot {
-        width: 6px;
-        height: 6px;
-        flex: 0 0 6px;
-        border-radius: 50%;
-        background: #9aaac1;
-    }
-
-    .sm-empty {
-        padding: 60px 20px;
-        text-align: center;
-    }
-
-    .sm-empty-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 66px;
-        height: 66px;
-        margin: 0 auto 18px;
-        border-radius: 19px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 28px;
-    }
-
-    .sm-empty h3 {
-        color: #243650;
-        font-size: 17px;
-        font-weight: 750;
-        margin: 0 0 8px;
-    }
-
-    .sm-empty p {
-        color: #8995a8;
-        font-size: 13px;
-        line-height: 1.7;
-        margin: 0 auto;
-        max-width: 380px;
-    }
-
-    .sm-footer-note {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 15px 17px;
-        background: #f7f9fd;
-        border: 1px solid #e8edf5;
-        border-radius: 11px;
-        color: #75839a;
-        font-size: 12px;
-        line-height: 1.7;
-    }
-
-        .sm-footer-note strong {
-            color: #52647e;
-        }
-
-    @@media (max-width: 767px) {
-        .sm-page {
-            padding-top: 20px;
-        }
-
-        .sm-title {
-            font-size: 25px;
-        }
-
-        .sm-stats {
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .sm-stat-card {
-            padding: 18px;
-        }
-
-        .sm-filter-panel {
-            padding: 19px;
-        }
-
-        .sm-filter-form {
-            align-items: stretch;
-        }
-
-        .sm-filter-field {
-            max-width: none;
-            flex-basis: 100%;
-        }
-
-        .sm-filter-form .sm-primary-btn,
-        .sm-filter-form .sm-secondary-btn {
-            flex: 1;
-        }
-
-        .sm-table-heading {
-            padding: 19px;
-        }
-
-        .sm-table thead th,
-        .sm-table tbody td {
-            padding: 14px 16px;
-        }
-    }
-</style>
-
-<div class="container sm-page">
+<div class="sm-page">
 
     <div class="sm-header">
         <div>
-            <div class="sm-eyebrow">STOK YÖNETİMİ / HAREKET GEÇMİŞİ</div>
+            <div class="sm-crumb">Stok Yönetimi <span>/</span> Hareket Geçmişi</div>
             <h1 class="sm-title">Stok Hareketleri</h1>
-            <p class="sm-subtitle">
-                Ürünlerin stok girişlerini, çıkışlarını ve işlem geçmişini takip edin.
-            </p>
+            <p class="sm-desc">Ürünlerin stok girişlerini, çıkışlarını ve işlem geçmişini takip edin.</p>
         </div>
 
-        <a href="@Url.Action("ProductList", "Products")"
-           class="sm-secondary-btn">
-            <span aria-hidden="true" style="margin-right:8px;">←</span>
-            Ürün Listesine Dön
+        <a href="@Url.Action("ProductList", "Products")" class="sm-btn-ghost">
+            <i class="fas fa-arrow-left"></i> Ürün Listesine Dön
         </a>
     </div>
 
     <div class="sm-stats">
-
-        <div class="sm-stat-card">
-            <div class="sm-stat-icon sm-icon-blue" aria-hidden="true">↕</div>
+        <div class="sm-stat">
+            <div class="sm-stat-icon sm-blue"><i class="fas fa-exchange-alt"></i></div>
             <div>
                 <div class="sm-stat-label">Toplam Hareket Kaydı</div>
                 <div class="sm-stat-value">@movementCount</div>
             </div>
         </div>
 
-        <div class="sm-stat-card">
-            <div class="sm-stat-icon sm-icon-green" aria-hidden="true">↑</div>
+        <div class="sm-stat">
+            <div class="sm-stat-icon sm-green"><i class="fas fa-arrow-up"></i></div>
             <div>
                 <div class="sm-stat-label">Giriş Miktarı</div>
                 <div class="sm-stat-value">+@totalEntries</div>
             </div>
         </div>
 
-        <div class="sm-stat-card">
-            <div class="sm-stat-icon sm-icon-red" aria-hidden="true">↓</div>
+        <div class="sm-stat">
+            <div class="sm-stat-icon sm-red"><i class="fas fa-arrow-down"></i></div>
             <div>
                 <div class="sm-stat-label">Çıkış Miktarı</div>
                 <div class="sm-stat-value">−@totalExits</div>
             </div>
         </div>
-
     </div>
 
-    <div class="sm-panel">
-        <div class="sm-filter-panel">
-
-            <div class="sm-filter-heading">
-                <div class="sm-filter-icon" aria-hidden="true">⌕</div>
+    <!-- Filtre -->
+    <div class="sm-card">
+        <div class="sm-filter">
+            <div class="sm-filter-head">
+                <div class="sm-icon"><i class="fas fa-filter"></i></div>
                 <div>
-                    <h2>Hareketleri filtrele</h2>
-                    <p>İncelemek istediğin ürünü seç.</p>
+                    <h2 class="sm-card-title">Hareketleri filtrele</h2>
+                    <span class="sm-card-sub">İncelemek istediğin ürünü seç.</span>
                 </div>
             </div>
 
-            @using (Html.BeginForm("Index", "StockMovements", FormMethod.Get,
-                                  new { @class = "sm-filter-form" }))
+            @using (Html.BeginForm("Index", "StockMovements", FormMethod.Get, new { @class = "sm-filter-form" }))
             {
-                <div class="sm-filter-field">
-                    <label for="productId">Ürün</label>
-
+                <div class="sm-field">
+                    <label for="productId" class="sm-label">Ürün</label>
                     <select id="productId" name="productId" class="sm-select">
-                        <option value=""
-                                selected="@(!selectedProductId.HasValue ? "selected" : null)">
-                            Tüm ürünler
-                        </option>
+                        <option value="" selected="@(!selectedProductId.HasValue ? "selected" : null)">Tüm ürünler</option>
 
                         @foreach (var product in products)
                         {
-                            <option value="@product.Id"
-                                    selected="@(selectedProductId == product.Id ? "selected" : null)">
+                            <option value="@product.Id" selected="@(selectedProductId == product.Id ? "selected" : null)">
                                 @product.Name
                             </option>
                         }
                     </select>
                 </div>
 
-                <button type="submit" class="sm-primary-btn">
-                    <span aria-hidden="true">⌕</span>
-                    Hareketleri Göster
+                <button type="submit" class="sm-btn-primary">
+                    <i class="fas fa-search"></i> Hareketleri Göster
                 </button>
 
-                <a href="@Url.Action("Index", "StockMovements")"
-                   class="sm-secondary-btn">
-                    Filtreyi Temizle
-                </a>
+                <a href="@Url.Action("Index", "StockMovements")" class="sm-btn-ghost">Filtreyi Temizle</a>
             }
-
         </div>
     </div>
 
-    <div class="sm-panel">
-
-        <div class="sm-table-heading">
-            <div class="sm-table-title">
-                <div class="sm-filter-icon" aria-hidden="true">▤</div>
+    <!-- Tablo -->
+    <div class="sm-card">
+        <div class="sm-card-top">
+            <div class="sm-filter-head">
+                <div class="sm-icon"><i class="fas fa-history"></i></div>
                 <div>
-                    <h2>Hareket Geçmişi</h2>
-                    <p>
-                        @(selectedProductId.HasValue
-                            ? "Seçilen ürünün stok hareketleri"
-                            : "Tüm ürünlerin stok hareketleri")
-                    </p>
+                    <h2 class="sm-card-title">Hareket Geçmişi</h2>
+                    <span class="sm-card-sub">
+                        @(selectedProductId.HasValue ? "Seçilen ürünün stok hareketleri" : "Tüm ürünlerin stok hareketleri")
+                    </span>
                 </div>
             </div>
 
-            <span class="sm-count-badge">@movementCount kayıt</span>
+            <span class="sm-pill">@movementCount kayıt</span>
         </div>
 
         @if (movementCount > 0)
         {
-            <div class="table-responsive">
-                <table class="table sm-table">
+            <div class="sm-table-wrap">
+                <table class="sm-table">
                     <thead>
                         <tr>
                             <th>Ürün</th>
@@ -629,58 +124,44 @@
                         @foreach (var movement in movements)
                         {
                             <tr>
-                                <td>
+                                <td data-label="Ürün">
                                     <div class="sm-product">
-                                        <div class="sm-product-icon" aria-hidden="true">
-                                            @(movement.Product != null
-                                                && !string.IsNullOrWhiteSpace(movement.Product.Name)
-                                                ? movement.Product.Name.Substring(0, 1).ToUpper()
+                                        <div class="sm-avatar">
+                                            @(movement.Product != null && !string.IsNullOrWhiteSpace(movement.Product.Name)
+                                                ? movement.Product.Name.Trim().Substring(0, 1).ToUpper()
                                                 : "?")
                                         </div>
                                         <span class="sm-product-name">
-                                            @(movement.Product != null
-                                                ? movement.Product.Name
-                                                : "Bilinmeyen ürün")
+                                            @(movement.Product != null ? movement.Product.Name : "Bilinmeyen ürün")
                                         </span>
                                     </div>
                                 </td>
 
-                                <td>
+                                <td data-label="İşlem Tarihi">
                                     <span class="sm-date">
                                         @movement.CreatedAt.ToString("dd.MM.yyyy")
-                                        <small>
-                                            @movement.CreatedAt.ToString("HH:mm")
-                                        </small>
+                                        <small>@movement.CreatedAt.ToString("HH:mm")</small>
                                     </span>
                                 </td>
 
-                                <td>
+                                <td data-label="Stok Değişimi">
                                     @if (movement.Change > 0)
                                     {
-                                        <span class="sm-change sm-change-in">
-                                            ↑ +@movement.Change adet
-                                        </span>
+                                        <span class="sm-change sm-in"><i class="fas fa-arrow-up"></i> +@movement.Change adet</span>
                                     }
                                     else if (movement.Change < 0)
                                     {
-                                        <span class="sm-change sm-change-out">
-                                            ↓ @movement.Change adet
-                                        </span>
+                                        <span class="sm-change sm-out"><i class="fas fa-arrow-down"></i> @movement.Change adet</span>
                                     }
                                     else
                                     {
-                                        <span class="sm-change sm-change-neutral">
-                                            0 adet
-                                        </span>
+                                        <span class="sm-change sm-neutral">0 adet</span>
                                     }
                                 </td>
 
-                                <td>
+                                <td data-label="İşlem Açıklaması">
                                     <span class="sm-reason">
-                                        <span class="sm-reason-dot"></span>
-                                        @(string.IsNullOrWhiteSpace(movement.Reason)
-                                            ? "Açıklama yok"
-                                            : movement.Reason)
+                                        @(string.IsNullOrWhiteSpace(movement.Reason) ? "Açıklama yok" : movement.Reason)
                                     </span>
                                 </td>
                             </tr>
@@ -692,10 +173,8 @@
         else
         {
             <div class="sm-empty">
-                <div class="sm-empty-icon" aria-hidden="true">↕</div>
-
+                <i class="fas fa-exchange-alt"></i>
                 <h3>Henüz stok hareketi yok</h3>
-
                 <p>
                     @if (selectedProductId.HasValue)
                     {
@@ -710,8 +189,8 @@
         }
     </div>
 
-    <div class="sm-footer-note">
-        <span aria-hidden="true">ⓘ</span>
+    <div class="sm-note">
+        <i class="fas fa-info-circle"></i>
         <div>
             <strong>Stok değişimi nasıl okunur?</strong>
             Negatif değerler stok çıkışını, pozitif değerler stok girişini gösterir.
@@ -722,46 +201,497 @@
 </div>
 
 <style>
-    .sm-page.container { width:100%; max-width:none; margin:0; padding:0 0 26px; color:var(--ink); }
-    .sm-eyebrow { color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.55px; }
-    .sm-title { color:var(--ink); font-size:28px; font-weight:700; letter-spacing:-.7px; }
-    .sm-subtitle { color:var(--muted); font-size:14px; }
-    .sm-stats { gap:15px; margin-bottom:20px; }
-    .sm-stat-card,.sm-panel { border-color:var(--line); border-radius:15px; background:#fff; box-shadow:0 4px 18px rgba(27,36,55,.04); }
-    .sm-stat-card { padding:19px 20px; }
-    .sm-icon-blue { color:var(--primary); background:var(--primary-soft); }
-    .sm-stat-label { color:var(--muted); }
-    .sm-stat-value { color:var(--ink); font-size:23px; }
-    .sm-filter-panel { padding:21px 22px; }
-    .sm-filter-heading { gap:12px; margin-bottom:17px; }
-    .sm-filter-icon { border-radius:12px; color:var(--primary); background:var(--primary-soft); }
-    .sm-filter-heading h2,.sm-table-title h2 { color:var(--ink); }
-    .sm-filter-heading p,.sm-table-title p { color:var(--muted); }
-    .sm-select { border-color:#e5e9f1; border-radius:9px; color:var(--ink); background:#f7f8fc; font-family:inherit; }
-    .sm-select:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(67,97,238,.1); }
-    .sm-primary-btn { border-radius:10px; color:#fff!important; background:linear-gradient(135deg,#4361ee,#6a4df0); box-shadow:0 5px 14px rgba(67,97,238,.22); transition:transform .15s,box-shadow .15s; }
-    .sm-primary-btn:hover { color:#fff!important; transform:translateY(-1px); box-shadow:0 7px 18px rgba(67,97,238,.3); }
-    .sm-secondary-btn { border-color:var(--line); border-radius:10px; color:#536078!important; }
-    .sm-secondary-btn:hover { border-color:#d6dced; background:#f8f9fc; }
-    .sm-table-heading { border-bottom-color:var(--line); }
-    .sm-count-badge { border-radius:999px; color:var(--primary); background:var(--primary-soft); }
-    .sm-table thead th { border-bottom-color:var(--line); color:#8590a3; background:#fafbfe; font-size:11px; letter-spacing:.65px; }
-    .sm-table tbody td { border-top-color:#f1f3f8; color:#536078; }
-    .sm-table tbody tr:hover { background:#fafbff; }
-    .sm-product-icon { border-radius:10px; color:var(--primary); background:var(--primary-soft); }
-    .sm-product-name,.sm-date { color:var(--ink); }
-    .sm-change-in { color:#178457; background:#e7f7ee; }
-    .sm-change-out { color:#c63f49; background:#ffebed; }
-    .sm-reason { color:#5b667c; }
-    .sm-reason-dot { background:#b7c0d0; }
-    .sm-empty-icon { color:var(--primary); background:var(--primary-soft); }
-    .sm-empty h3 { color:var(--ink); }
-    .sm-empty p { color:var(--muted); }
-    .sm-footer-note { border-color:#e2e9ff; border-radius:12px; color:#65718a; background:var(--primary-soft); }
-    .sm-footer-note>span { color:var(--primary); }
-    .sm-footer-note strong { color:var(--ink); }
-    @@media (max-width:767px) {
-        .sm-title { font-size:24px; }
-        .sm-filter-panel,.sm-table-heading { padding:17px; }
+    .sm-page {
+        color: var(--ink);
+    }
+
+    /* Header */
+    .sm-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .sm-crumb {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+    }
+
+        .sm-crumb span {
+            margin: 0 4px;
+            opacity: .5;
+        }
+
+    .sm-title {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.7px;
+        margin: 0 0 4px;
+    }
+
+    .sm-desc {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    /* Buttons */
+    .sm-btn-primary, .sm-btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 46px;
+        padding: 0 18px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none !important;
+        white-space: nowrap;
+        transition: all .15s;
+    }
+
+    .sm-btn-primary {
+        color: #fff !important;
+        border: 0;
+        background: linear-gradient(135deg, #4361ee, #6a4df0);
+        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.28);
+    }
+
+        .sm-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.36);
+        }
+
+    .sm-btn-ghost {
+        color: #536078 !important;
+        background: #fff;
+        border: 1px solid var(--line);
+    }
+
+        .sm-btn-ghost:hover {
+            background: #f2f4f9;
+        }
+
+        .sm-btn-ghost i, .sm-btn-primary i {
+            font-size: 12px;
+        }
+
+    /* Stats */
+    .sm-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .sm-stat {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+        padding: 20px 22px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        transition: box-shadow .2s, transform .2s;
+    }
+
+        .sm-stat:hover {
+            box-shadow: 0 8px 22px rgba(27, 36, 55, 0.06);
+            transform: translateY(-1px);
+        }
+
+    .sm-stat-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 17px;
+    }
+
+    .sm-blue {
+        color: #4361ee;
+        background: #eef1ff;
+    }
+
+    .sm-green {
+        color: #178457;
+        background: #e7f7ee;
+    }
+
+    .sm-red {
+        color: #c63f49;
+        background: #ffebed;
+    }
+
+    .sm-stat-label {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+
+    .sm-stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        overflow-wrap: anywhere;
+    }
+
+    /* Cards */
+    .sm-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(27, 36, 55, 0.04);
+        margin-bottom: 22px;
+    }
+
+    .sm-card-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .sm-filter {
+        padding: 22px 24px;
+    }
+
+    .sm-filter-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .sm-filter .sm-filter-head {
+        margin-bottom: 20px;
+    }
+
+    .sm-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 15px;
+        color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    .sm-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 3px;
+        letter-spacing: -0.2px;
+    }
+
+    .sm-card-sub {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .sm-pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary);
+        background: var(--primary-soft);
+        white-space: nowrap;
+    }
+
+    /* Filter form */
+    .sm-filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 12px;
+        margin: 0;
+    }
+
+    .sm-field {
+        flex: 1 1 260px;
+        max-width: 440px;
+    }
+
+    .sm-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #344054;
+        margin: 0 0 8px;
+    }
+
+    .sm-select {
+        display: block;
+        width: 100%;
+        height: 46px;
+        padding: 0 14px;
+        margin: 0;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--ink);
+        background-color: #f6f8fc;
+        border: 1px solid #f6f8fc;
+        border-radius: 10px;
+        outline: none;
+        transition: background .15s, border-color .15s, box-shadow .15s;
+    }
+
+        .sm-select:focus {
+            background-color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+        }
+
+    /* Table */
+    .sm-table-wrap {
+        overflow-x: auto;
+    }
+
+    .sm-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .sm-table thead th {
+            padding: 14px 24px;
+            background: #fafbfe;
+            border-bottom: 1px solid var(--line);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            text-align: left;
+            color: #8590a3;
+            white-space: nowrap;
+        }
+
+        .sm-table tbody td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f3f8;
+            font-size: 14px;
+            color: #536078;
+            vertical-align: middle;
+        }
+
+        .sm-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .sm-table tbody tr {
+            transition: background .12s;
+        }
+
+            .sm-table tbody tr:hover {
+                background: #fafbff;
+            }
+
+    .sm-product {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 150px;
+    }
+
+    .sm-avatar {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    .sm-product-name {
+        font-weight: 600;
+        color: var(--ink);
+    }
+
+    .sm-date {
+        white-space: nowrap;
+        color: var(--ink);
+    }
+
+        .sm-date small {
+            display: block;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #9aa4b6;
+        }
+
+    .sm-change {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-width: 92px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .sm-change i {
+            font-size: 10px;
+        }
+
+    .sm-in {
+        color: #178457;
+        background: #e7f7ee;
+    }
+
+    .sm-out {
+        color: #c63f49;
+        background: #ffebed;
+    }
+
+    .sm-neutral {
+        color: #5b667c;
+        background: #f2f4f9;
+    }
+
+    .sm-reason {
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    /* Empty */
+    .sm-empty {
+        padding: 56px 20px;
+        text-align: center;
+    }
+
+        .sm-empty > i {
+            font-size: 34px;
+            color: #c3cad8;
+            margin-bottom: 14px;
+        }
+
+        .sm-empty h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0 0 6px;
+        }
+
+        .sm-empty p {
+            max-width: 400px;
+            margin: 0 auto;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+    /* Note */
+    .sm-note {
+        display: flex;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4a5670;
+        background: var(--primary-soft);
+    }
+
+        .sm-note > i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .sm-note strong {
+            display: block;
+            color: var(--ink);
+        }
+
+    @@media (max-width: 991px) {
+        .sm-stats {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+    }
+
+    @@media (max-width: 767px) {
+        .sm-title {
+            font-size: 24px;
+        }
+
+        .sm-card-top, .sm-filter {
+            padding: 17px 16px;
+        }
+
+        .sm-field {
+            max-width: none;
+            flex-basis: 100%;
+        }
+
+        .sm-filter-form .sm-btn-primary, .sm-filter-form .sm-btn-ghost {
+            flex: 1;
+        }
+
+        .sm-table thead {
+            display: none;
+        }
+
+        .sm-table, .sm-table tbody, .sm-table tr, .sm-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .sm-table tbody tr {
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--line);
+            }
+
+                .sm-table tbody tr:last-child {
+                    border-bottom: 0;
+                }
+
+            .sm-table tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 8px 0;
+                border: 0;
+                text-align: right;
+            }
+
+                .sm-table tbody td::before {
+                    content: attr(data-label);
+                    flex: 0 0 110px;
+                    text-align: left;
+                    font-size: 10px;
+                    font-weight: 700;
+                    letter-spacing: .5px;
+                    text-transform: uppercase;
+                    color: var(--muted);
+                }
     }
 </style>

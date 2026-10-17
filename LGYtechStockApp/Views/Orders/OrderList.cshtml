@@ -1,373 +1,101 @@
-﻿
-@model IEnumerable<LGYtechStockApp.ViewModels.OrderListViewModel>
+﻿@model IEnumerable<LGYtechStockApp.ViewModels.OrderListViewModel>
 
 @{
     ViewBag.Title = "Sipariş Listesi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var orders = Model ?? Enumerable.Empty<LGYtechStockApp.ViewModels.OrderListViewModel>();
-    var orderCount = orders.Count();
+    var orders = (Model ?? Enumerable.Empty<LGYtechStockApp.ViewModels.OrderListViewModel>()).ToList();
+    var orderCount = orders.Count;
     var totalAmount = orders.Sum(o => o.Total);
+    var averageAmount = orderCount > 0 ? totalAmount / orderCount : 0;
 }
 
-<style>
-    .orders-page {
-        padding: 28px 0 40px;
-        color: #172b4d;
-    }
+<div class="ol-page">
 
-    .orders-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 28px;
-        flex-wrap: wrap;
-    }
-
-    .orders-eyebrow {
-        color: #3978d4;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-    }
-
-    .orders-title {
-        font-size: 28px;
-        font-weight: 750;
-        letter-spacing: -0.7px;
-        margin: 0 0 8px;
-        color: #172b4d;
-    }
-
-    .orders-subtitle {
-        color: #75839a;
-        margin: 0;
-        font-size: 14px;
-    }
-
-    .btn-new-order {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        padding: 12px 18px;
-        border-radius: 10px;
-        border: 0;
-        background: #2864dc;
-        color: #fff !important;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none !important;
-        box-shadow: 0 5px 14px rgba(40, 100, 220, .18);
-        transition: transform .2s, background .2s, box-shadow .2s;
-    }
-
-        .btn-new-order:hover {
-            background: #1e50ba;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(40, 100, 220, .24);
-        }
-
-    .orders-stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-        margin-bottom: 24px;
-    }
-
-    .order-stat-card {
-        background: #fff;
-        border: 1px solid #e8edf5;
-        border-radius: 14px;
-        padding: 22px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        box-shadow: 0 4px 18px rgba(30, 55, 90, .035);
-    }
-
-    .order-stat-icon {
-        width: 48px;
-        height: 48px;
-        flex: 0 0 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 22px;
-    }
-
-    .order-stat-label {
-        color: #7c899e;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
-
-    .order-stat-value {
-        color: #172b4d;
-        font-size: 24px;
-        font-weight: 750;
-        line-height: 1.2;
-        overflow-wrap: anywhere;
-    }
-
-    .orders-table-card {
-        background: #fff;
-        border: 1px solid #e8edf5;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 4px 18px rgba(30, 55, 90, .035);
-    }
-
-    .orders-table-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 21px 24px;
-        border-bottom: 1px solid #edf0f5;
-    }
-
-    .orders-table-title {
-        margin: 0;
-        color: #172b4d;
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .orders-count {
-        background: #edf4ff;
-        color: #2864dc;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .orders-table {
-        width: 100%;
-        margin: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-        .orders-table thead th {
-            padding: 15px 24px;
-            background: #f8faff;
-            color: #7b879b;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .65px;
-            text-transform: uppercase;
-            border: 0;
-            white-space: nowrap;
-        }
-
-        .orders-table tbody td {
-            padding: 19px 24px;
-            border-top: 1px solid #f0f3f8;
-            color: #43536b;
-            font-size: 13px;
-            vertical-align: middle;
-        }
-
-        .orders-table tbody tr {
-            transition: background .15s;
-        }
-
-            .orders-table tbody tr:hover {
-                background: #f9fbff;
-            }
-
-    .order-number {
-        display: inline-flex;
-        align-items: center;
-        padding: 7px 10px;
-        border-radius: 8px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-weight: 700;
-        font-size: 12px;
-    }
-
-    .order-customer {
-        color: #243650;
-        font-weight: 650;
-        font-size: 13px;
-    }
-
-    .order-date {
-        color: #75839a;
-        white-space: nowrap;
-    }
-
-    .order-line-count {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 30px;
-        height: 28px;
-        padding: 0 9px;
-        background: #f0f4fa;
-        border-radius: 8px;
-        color: #52647e;
-        font-weight: 700;
-        font-size: 12px;
-    }
-
-    .order-total {
-        color: #172b4d !important;
-        font-weight: 750;
-        white-space: nowrap;
-        text-align: right;
-    }
-
-    .orders-empty {
-        padding: 64px 20px;
-        text-align: center;
-    }
-
-    .orders-empty-icon {
-        width: 64px;
-        height: 64px;
-        margin: 0 auto 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 18px;
-        background: #edf4ff;
-        color: #2864dc;
-        font-size: 27px;
-    }
-
-    .orders-empty h3 {
-        color: #243650;
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    .orders-empty p {
-        color: #7b879b;
-        font-size: 13px;
-        margin-bottom: 22px;
-    }
-
-    @@media (max-width: 767px) {
-        .orders-page {
-            padding-top: 20px;
-        }
-
-        .orders-title {
-            font-size: 24px;
-        }
-
-        .orders-stats {
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .order-stat-card {
-            padding: 18px;
-        }
-
-        .orders-table-header {
-            padding: 18px;
-        }
-
-        .orders-table thead th,
-        .orders-table tbody td {
-            padding: 14px 16px;
-        }
-    }
-</style>
-
-<div class="container orders-page">
-
-    <div class="orders-header">
+    <div class="ol-header">
         <div>
-            <div class="orders-eyebrow">STOK YÖNETİMİ / SİPARİŞLER</div>
-            <h1 class="orders-title">Sipariş Listesi</h1>
-            <p class="orders-subtitle">
-                Oluşturulan siparişleri ve toplam tutarlarını görüntüleyin.
-            </p>
+            <div class="ol-crumb">Stok Yönetimi <span>/</span> Siparişler</div>
+            <h1 class="ol-title">Sipariş Listesi</h1>
+            <p class="ol-desc">Oluşturulan siparişleri ve toplam tutarlarını görüntüleyin.</p>
         </div>
 
-        <a href="@Url.Action("CreateOrder", "Orders")"
-           class="btn-new-order">
-            <span aria-hidden="true">+</span>
-            Yeni Sipariş Oluştur
+        <a href="@Url.Action("CreateOrder", "Orders")" class="ol-btn-new">
+            <i class="fas fa-plus"></i> Yeni Sipariş Oluştur
         </a>
     </div>
 
-    <div class="orders-stats">
-        <div class="order-stat-card">
-            <div class="order-stat-icon" aria-hidden="true">▤</div>
+    <div class="ol-stats">
+        <div class="ol-stat">
+            <div class="ol-stat-icon ol-blue"><i class="fas fa-receipt"></i></div>
             <div>
-                <div class="order-stat-label">Toplam Sipariş</div>
-                <div class="order-stat-value">@orderCount</div>
+                <div class="ol-stat-label">Toplam Sipariş</div>
+                <div class="ol-stat-value">@orderCount</div>
             </div>
         </div>
 
-        <div class="order-stat-card">
-            <div class="order-stat-icon" aria-hidden="true">₺</div>
+        <div class="ol-stat">
+            <div class="ol-stat-icon ol-green"><i class="fas fa-lira-sign"></i></div>
             <div>
-                <div class="order-stat-label">Toplam Sipariş Tutarı</div>
-                <div class="order-stat-value">@totalAmount.ToString("N2") ₺</div>
+                <div class="ol-stat-label">Toplam Sipariş Tutarı</div>
+                <div class="ol-stat-value">@totalAmount.ToString("N2") ₺</div>
+            </div>
+        </div>
+
+        <div class="ol-stat">
+            <div class="ol-stat-icon ol-violet"><i class="fas fa-chart-line"></i></div>
+            <div>
+                <div class="ol-stat-label">Ortalama Sipariş Tutarı</div>
+                <div class="ol-stat-value">@averageAmount.ToString("N2") ₺</div>
             </div>
         </div>
     </div>
 
-    <div class="orders-table-card">
-        <div class="orders-table-header">
-            <h2 class="orders-table-title">Tüm Siparişler</h2>
-            <span class="orders-count">@orderCount kayıt</span>
+    <div class="ol-card">
+        <div class="ol-card-head">
+            <div>
+                <h2 class="ol-card-title">Tüm Siparişler</h2>
+                <span class="ol-card-sub">Sipariş geçmişinin tamamı.</span>
+            </div>
+            <span class="ol-pill">@orderCount kayıt</span>
         </div>
 
         @if (orderCount > 0)
         {
-            <div class="table-responsive orders-table-wrap">
-                <table class="table orders-table">
+            <div class="ol-table-wrap">
+                <table class="ol-table">
                     <thead>
                         <tr>
                             <th>Sipariş No</th>
                             <th>Müşteri</th>
                             <th>Sipariş Tarihi</th>
                             <th>Satır Sayısı</th>
-                            <th>Toplam Tutar</th>
+                            <th class="ol-right">Toplam Tutar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var order in orders)
                         {
                             <tr>
-                                <td data-label="Sipariş No"><span class="order-number">
-                                        #@order.OrderId
+                                <td data-label="Sipariş No">
+                                    <span class="ol-no">#@order.OrderId</span>
+                                </td>
+                                <td data-label="Müşteri">
+                                    <div class="ol-customer">
+                                        <div class="ol-avatar">@(string.IsNullOrWhiteSpace(order.CustomerName) ? "?" : order.CustomerName.Trim().Substring(0, 1).ToUpper())</div>
+                                        <span class="ol-customer-name">@order.CustomerName</span>
+                                    </div>
+                                </td>
+                                <td data-label="Sipariş Tarihi">
+                                    <span class="ol-date">
+                                        @order.CreatedAt.ToString("dd.MM.yyyy")
+                                        <small>@order.CreatedAt.ToString("HH:mm")</small>
                                     </span>
                                 </td>
-                                <td data-label="Müşteri"><span class="order-customer">
-                                        @order.CustomerName
-                                    </span>
+                                <td data-label="Satır Sayısı">
+                                    <span class="ol-lines">@order.OrderLineCount</span>
                                 </td>
-                                <td data-label="Sipariş Tarihi"><span class="order-date">
-                                        @order.CreatedAt.ToString("dd.MM.yyyy HH:mm")
-                                    </span>
-                                </td>
-                                <td class="order-line-count-cell" data-label="Satır Sayısı"><span class="order-line-count">
-                                        @order.OrderLineCount
-                                    </span>
-                                </td>
-                                <td class="order-total" data-label="Toplam Tutar">
-                                    <span>
-                                        @order.Total.ToString("N2") ₺
-                                    </span>
-                                    
+                                <td data-label="Toplam Tutar" class="ol-right">
+                                    <span class="ol-total">@order.Total.ToString("N2") ₺</span>
                                 </td>
                             </tr>
                         }
@@ -377,114 +105,377 @@
         }
         else
         {
-            <div class="orders-empty">
-                <div class="orders-empty-icon" aria-hidden="true">▤</div>
+            <div class="ol-empty">
+                <i class="fas fa-receipt"></i>
                 <h3>Henüz sipariş bulunmuyor</h3>
                 <p>Oluşturduğun siparişler burada listelenecek.</p>
-                <a href="@Url.Action("CreateOrder", "Orders")"
-                   class="btn-new-order">
-                    + İlk Siparişi Oluştur
+                <a href="@Url.Action("CreateOrder", "Orders")" class="ol-btn-new">
+                    <i class="fas fa-plus"></i> İlk Siparişi Oluştur
                 </a>
             </div>
         }
     </div>
 </div>
+
 <style>
-    .orders-page.container { width:100%; max-width:none; margin:0; padding:0 0 26px; color:var(--ink); }
-    .orders-eyebrow { color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.55px; text-transform:uppercase; }
-    .orders-title { color:var(--ink); font-size:28px; font-weight:700; letter-spacing:-.7px; }
-    .orders-subtitle { color:var(--muted); font-size:14px; }
-    .btn-new-order { border:0; border-radius:10px; color:#fff!important; background:linear-gradient(135deg,#4361ee,#6a4df0); box-shadow:0 6px 16px rgba(67,97,238,.24); transition:transform .15s,box-shadow .15s; }
-    .btn-new-order:hover { color:#fff!important; transform:translateY(-1px); box-shadow:0 8px 20px rgba(67,97,238,.32); }
-    .orders-stats { gap:16px; margin-bottom:22px; }
-    .order-stat-card { border:1px solid var(--line); border-radius:14px; background:#fff; box-shadow:0 4px 18px rgba(27,36,55,.035); }
-    .order-stat-icon { color:var(--primary); background:var(--primary-soft); }
-    .order-stat-card:nth-child(2) .order-stat-icon { color:#7855d9; background:#f2edff; }
-    .order-stat-label { color:var(--muted); }
-    .order-stat-value { color:var(--ink); font-size:24px; letter-spacing:-.4px; }
-    .orders-table-card { border:1px solid var(--line); border-radius:16px; box-shadow:0 4px 18px rgba(27,36,55,.04); }
-    .orders-table-header { border-bottom:1px solid var(--line); }
-    .orders-table-title { color:var(--ink); font-size:17px; }
-    .orders-count { border-radius:999px; color:var(--primary); background:var(--primary-soft); }
-    .orders-table { margin-bottom:0; color:var(--ink); }
-    .orders-table thead th { padding:14px 22px; border-top:0; border-bottom:1px solid var(--line); color:#8590a3; background:#fafbfe; font-size:11px; letter-spacing:.65px; text-transform:uppercase; white-space:nowrap; }
-    .orders-table tbody td { padding:15px 22px; border-top:0; border-bottom:1px solid #f1f3f8; color:#536078; vertical-align:middle; }
-    .orders-table tbody tr:last-child td { border-bottom:0; }
-    .orders-table tbody tr:hover { background:#fafbff; }
-    .order-number { border:1px solid #e6eaff; border-radius:7px; color:var(--primary); background:#f5f6ff; font-family:Consolas,'SFMono-Regular',monospace; font-weight:700; }
-    .order-customer { color:var(--ink); font-weight:600; }
-    .order-date { color:#536078; }
-    .order-line-count { border-radius:9px; color:#5b667c; background:#f2f4f9; font-weight:700; }
-    .order-total { color:var(--ink); font-weight:700; }
-    .orders-empty { padding:52px 20px; }
-    .orders-empty-icon { color:var(--primary); background:var(--primary-soft); }
-    .orders-empty h3 { color:var(--ink); }
-    .orders-empty p { color:var(--muted); }
-    @@media (max-width:767px) {
-        .orders-title { font-size:24px; }
-        .orders-table thead th,.orders-table tbody td { padding-right:14px; padding-left:14px; }
+    .ol-page {
+        color: var(--ink);
     }
-</style>
-<style>
-    @@media (max-width:767px) {
-        .orders-table-wrap {
-            overflow-x: visible;
+
+    /* Header */
+    .ol-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .ol-crumb {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+    }
+
+        .ol-crumb span {
+            margin: 0 4px;
+            opacity: .5;
         }
 
-        .orders-table.table {
-            display: block;
-            width: 100%;
-            margin: 0;
+    .ol-title {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.7px;
+        margin: 0 0 4px;
+    }
+
+    .ol-desc {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .ol-btn-new {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff !important;
+        text-decoration: none !important;
+        background: linear-gradient(135deg, #4361ee, #6a4df0);
+        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.28);
+        transition: transform .15s, box-shadow .15s;
+    }
+
+        .ol-btn-new:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.36);
         }
 
-        .orders-table thead {
-            display: none;
+    /* Stats */
+    .ol-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .ol-stat {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+        padding: 20px 22px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        transition: box-shadow .2s, transform .2s;
+    }
+
+        .ol-stat:hover {
+            box-shadow: 0 8px 22px rgba(27, 36, 55, 0.06);
+            transform: translateY(-1px);
         }
 
-        .orders-table tbody {
-            display: block;
-            width: 100%;
-        }
+    .ol-stat-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 18px;
+    }
 
-        .orders-table tbody tr {
-            display: block;
-            padding: 8px 16px;
+    .ol-blue {
+        color: #4361ee;
+        background: #eef1ff;
+    }
+
+    .ol-green {
+        color: #178457;
+        background: #e7f7ee;
+    }
+
+    .ol-violet {
+        color: #7855d9;
+        background: #f2edff;
+    }
+
+    .ol-stat-label {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 4px;
+    }
+
+    .ol-stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        overflow-wrap: anywhere;
+    }
+
+    /* Card + table */
+    .ol-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(27, 36, 55, 0.04);
+    }
+
+    .ol-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .ol-card-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 3px;
+        letter-spacing: -0.2px;
+    }
+
+    .ol-card-sub {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .ol-pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary);
+        background: var(--primary-soft);
+        white-space: nowrap;
+    }
+
+    .ol-table-wrap {
+        overflow-x: auto;
+    }
+
+    .ol-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .ol-table thead th {
+            padding: 14px 24px;
+            background: #fafbfe;
             border-bottom: 1px solid var(--line);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            text-align: left;
+            color: #8590a3;
+            white-space: nowrap;
         }
 
-        .orders-table tbody tr:last-child {
+        .ol-table tbody td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f3f8;
+            font-size: 14px;
+            color: #536078;
+            vertical-align: middle;
+        }
+
+        .ol-table tbody tr:last-child td {
             border-bottom: 0;
         }
 
-        .orders-table.table tbody td {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            width: 100%;
-            padding: 8px 0;
-            border: 0;
-            text-align: right !important;
+        .ol-table tbody tr {
+            transition: background .12s;
         }
 
-        .orders-table tbody td::before {
-            content: attr(data-label);
-            flex: 0 0 112px;
-            color: var(--muted);
-            font-size: 10px;
+            .ol-table tbody tr:hover {
+                background: #fafbff;
+            }
+
+    .ol-right {
+        text-align: right !important;
+    }
+
+    .ol-no {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 7px;
+        border: 1px solid #e6eaff;
+        font-family: Consolas, 'SFMono-Regular', monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        background: #f5f6ff;
+    }
+
+    .ol-customer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .ol-avatar {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    .ol-customer-name {
+        font-weight: 600;
+        color: var(--ink);
+    }
+
+    .ol-date {
+        white-space: nowrap;
+        color: var(--ink);
+    }
+
+        .ol-date small {
+            display: block;
+            margin-top: 2px;
+            font-size: 12px;
+            color: #9aa4b6;
+        }
+
+    .ol-lines {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #5b667c;
+        background: #f2f4f9;
+    }
+
+    .ol-total {
+        font-weight: 700;
+        color: var(--ink);
+        white-space: nowrap;
+    }
+
+    /* Empty */
+    .ol-empty {
+        padding: 56px 20px;
+        text-align: center;
+    }
+
+        .ol-empty > i {
+            font-size: 34px;
+            color: #c3cad8;
+            margin-bottom: 14px;
+        }
+
+        .ol-empty h3 {
+            font-size: 17px;
             font-weight: 700;
-            letter-spacing: .45px;
-            text-align: left;
-            text-transform: uppercase;
+            margin: 0 0 6px;
         }
 
-        .orders-table tbody td > span {
-            max-width: calc(100% - 124px);
-            overflow-wrap: anywhere;
+        .ol-empty p {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0 0 20px;
         }
 
-        .orders-table tbody td.order-line-count-cell {
-            justify-content: space-between;
+    @@media (max-width: 991px) {
+        .ol-stats {
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
+    }
+
+    @@media (max-width: 767px) {
+        .ol-title {
+            font-size: 24px;
+        }
+
+        .ol-card-head {
+            padding: 17px 16px;
+        }
+
+        .ol-table thead {
+            display: none;
+        }
+
+        .ol-table, .ol-table tbody, .ol-table tr, .ol-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .ol-table tbody tr {
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--line);
+            }
+
+                .ol-table tbody tr:last-child {
+                    border-bottom: 0;
+                }
+
+            .ol-table tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 8px 0;
+                border: 0;
+                text-align: right !important;
+            }
+
+                .ol-table tbody td::before {
+                    content: attr(data-label);
+                    flex: 0 0 110px;
+                    text-align: left;
+                    font-size: 10px;
+                    font-weight: 700;
+                    letter-spacing: .5px;
+                    text-transform: uppercase;
+                    color: var(--muted);
+                }
     }
 </style>
