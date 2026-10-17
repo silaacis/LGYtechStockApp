@@ -1,33 +1,451 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Ana Sayfa";
+    var today = DateTime.Now.ToString("dd MMMM yyyy, dddd", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"));
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+<div class="hm-page">
+
+    <!-- Hero -->
+    <section class="hm-hero">
+        <div class="hm-hero-text">
+            <div class="hm-date"><i class="far fa-calendar-alt"></i> @today</div>
+            <h1 class="hm-hero-title">Stok Yönetim Sistemi'ne<br />hoş geldin</h1>
+            <p class="hm-hero-desc">
+                Ürünlerini, siparişlerini ve stok hareketlerini tek yerden yönet.
+                Hızlı başlamak için aşağıdaki kısayolları kullanabilirsin.
+            </p>
+
+            <div class="hm-hero-actions">
+                <a href="@Url.Action("ProductList", "Products")" class="hm-btn-light">
+                    <i class="fas fa-box"></i> Ürünleri Görüntüle
+                </a>
+                <a href="@Url.Action("CreateOrder", "Orders")" class="hm-btn-outline">
+                    <i class="fas fa-plus"></i> Yeni Sipariş
+                </a>
+            </div>
+        </div>
+
+        <div class="hm-hero-art" aria-hidden="true">
+            <div class="hm-art-card hm-art-1"><i class="fas fa-box"></i></div>
+            <div class="hm-art-card hm-art-2"><i class="fas fa-shopping-cart"></i></div>
+            <div class="hm-art-card hm-art-3"><i class="fas fa-exchange-alt"></i></div>
+        </div>
     </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+    <!-- Hızlı erişim -->
+    <div class="hm-section-head">
+        <h2 class="hm-section-title">Hızlı Erişim</h2>
+        <span class="hm-section-sub">Sık kullanılan bölümlere tek tıkla git.</span>
     </div>
-</main>
+
+    <div class="hm-cards">
+        <a href="@Url.Action("ProductList", "Products")" class="hm-card">
+            <div class="hm-card-icon hm-blue"><i class="fas fa-box"></i></div>
+            <h3 class="hm-card-title">Ürünler</h3>
+            <p class="hm-card-text">Ürün listesini görüntüle, yeni ürün ekle ve stok miktarlarını güncelle.</p>
+            <span class="hm-card-link">Ürünlere git <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+        <a href="@Url.Action("OrderList", "Orders")" class="hm-card">
+            <div class="hm-card-icon hm-violet"><i class="fas fa-shopping-cart"></i></div>
+            <h3 class="hm-card-title">Siparişler</h3>
+            <p class="hm-card-text">Oluşturulan siparişleri incele ve yeni sipariş oluştur.</p>
+            <span class="hm-card-link">Siparişlere git <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+        <a href="@Url.Action("Index", "StockMovements")" class="hm-card">
+            <div class="hm-card-icon hm-green"><i class="fas fa-exchange-alt"></i></div>
+            <h3 class="hm-card-title">Stok Hareketleri</h3>
+            <p class="hm-card-text">Stok giriş ve çıkışlarını ürün bazında takip et.</p>
+            <span class="hm-card-link">Hareketlere git <i class="fas fa-arrow-right"></i></span>
+        </a>
+    </div>
+
+    <!-- Nasıl çalışır -->
+    <div class="hm-section-head">
+        <h2 class="hm-section-title">Nasıl Çalışır?</h2>
+        <span class="hm-section-sub">Üç adımda stok takibi.</span>
+    </div>
+
+    <div class="hm-steps">
+        <div class="hm-step">
+            <div class="hm-step-no">1</div>
+            <div>
+                <h3 class="hm-step-title">Ürün ekle</h3>
+                <p class="hm-step-text">Ürün adı, SKU, fiyat ve başlangıç stoğunu girerek ürünü kaydet.</p>
+                <a href="@Url.Action("AddProduct", "Products")" class="hm-step-link">Yeni ürün ekle</a>
+            </div>
+        </div>
+
+        <div class="hm-step">
+            <div class="hm-step-no">2</div>
+            <div>
+                <h3 class="hm-step-title">Sipariş oluştur</h3>
+                <p class="hm-step-text">Müşteriyi ve ürünleri seç. Stok yeterliliği otomatik kontrol edilir.</p>
+                <a href="@Url.Action("CreateOrder", "Orders")" class="hm-step-link">Yeni sipariş oluştur</a>
+            </div>
+        </div>
+
+        <div class="hm-step">
+            <div class="hm-step-no">3</div>
+            <div>
+                <h3 class="hm-step-title">Hareketleri izle</h3>
+                <p class="hm-step-text">Her siparişte oluşan stok değişimi hareket geçmişine kaydedilir.</p>
+                <a href="@Url.Action("Index", "StockMovements")" class="hm-step-link">Hareket geçmişi</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .hm-page {
+        color: var(--ink);
+    }
+
+    /* Hero */
+    .hm-hero {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        padding: 44px 48px;
+        margin-bottom: 36px;
+        border-radius: 22px;
+        color: #fff;
+        background: linear-gradient(135deg, #3b57e0 0%, #5b4de8 55%, #7b5cf0 100%);
+        box-shadow: 0 16px 40px rgba(67, 97, 238, 0.28);
+    }
+
+        .hm-hero::before, .hm-hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hm-hero::before {
+            width: 320px;
+            height: 320px;
+            top: -140px;
+            right: -60px;
+        }
+
+        .hm-hero::after {
+            width: 200px;
+            height: 200px;
+            bottom: -110px;
+            left: 38%;
+        }
+
+    .hm-hero-text {
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+    }
+
+    .hm-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        margin-bottom: 18px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .hm-hero-title {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -1px;
+        margin: 0 0 14px;
+        color: #fff;
+    }
+
+    .hm-hero-desc {
+        margin: 0 0 26px;
+        font-size: 15px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .hm-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .hm-btn-light, .hm-btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 46px;
+        padding: 0 22px;
+        border-radius: 11px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: transform .15s, background .15s;
+    }
+
+    .hm-btn-light {
+        color: #3b57e0 !important;
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(20, 30, 90, 0.2);
+    }
+
+        .hm-btn-light:hover {
+            transform: translateY(-1px);
+        }
+
+    .hm-btn-outline {
+        color: #fff !important;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+        .hm-btn-outline:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hm-btn-light i, .hm-btn-outline i {
+            font-size: 13px;
+        }
+
+    .hm-hero-art {
+        position: relative;
+        z-index: 1;
+        width: 260px;
+        height: 190px;
+        flex-shrink: 0;
+    }
+
+    .hm-art-card {
+        position: absolute;
+        width: 84px;
+        height: 84px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        font-size: 30px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        backdrop-filter: blur(4px);
+    }
+
+    .hm-art-1 {
+        top: 0;
+        left: 10px;
+    }
+
+    .hm-art-2 {
+        top: 50px;
+        right: 0;
+        width: 96px;
+        height: 96px;
+        font-size: 34px;
+    }
+
+    .hm-art-3 {
+        bottom: 0;
+        left: 70px;
+    }
+
+    /* Section heading */
+    .hm-section-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .hm-section-title {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+        margin: 0;
+    }
+
+    .hm-section-sub {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    /* Cards */
+    .hm-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 36px;
+    }
+
+    .hm-card {
+        display: flex;
+        flex-direction: column;
+        padding: 26px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        color: var(--ink) !important;
+        text-decoration: none !important;
+        box-shadow: 0 4px 18px rgba(27, 36, 55, 0.04);
+        transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+
+        .hm-card:hover {
+            transform: translateY(-4px);
+            border-color: #d9e0fb;
+            box-shadow: 0 14px 30px rgba(67, 97, 238, 0.12);
+        }
+
+    .hm-card-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .hm-blue {
+        color: #4361ee;
+        background: #eef1ff;
+    }
+
+    .hm-violet {
+        color: #7855d9;
+        background: #f2edff;
+    }
+
+    .hm-green {
+        color: #178457;
+        background: #e7f7ee;
+    }
+
+    .hm-card-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 8px;
+        letter-spacing: -0.3px;
+    }
+
+    .hm-card-text {
+        flex: 1;
+        margin: 0 0 18px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--muted);
+    }
+
+    .hm-card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+        .hm-card-link i {
+            font-size: 11px;
+            transition: transform .2s;
+        }
+
+    .hm-card:hover .hm-card-link i {
+        transform: translateX(4px);
+    }
+
+    /* Steps */
+    .hm-steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .hm-step {
+        display: flex;
+        gap: 16px;
+        padding: 22px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+    }
+
+    .hm-step-no {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #4361ee, #7b5cf0);
+    }
+
+    .hm-step-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 6px;
+    }
+
+    .hm-step-text {
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--muted);
+    }
+
+    .hm-step-link {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--primary) !important;
+        text-decoration: none !important;
+    }
+
+        .hm-step-link:hover {
+            text-decoration: underline !important;
+        }
+
+    @@media (max-width: 991px) {
+        .hm-hero {
+            padding: 34px 28px;
+        }
+
+        .hm-hero-art {
+            display: none;
+        }
+
+        .hm-cards, .hm-steps {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .hm-hero {
+            padding: 28px 22px;
+            border-radius: 18px;
+        }
+
+        .hm-hero-title {
+            font-size: 28px;
+        }
+
+        .hm-hero-actions a {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+</style>
