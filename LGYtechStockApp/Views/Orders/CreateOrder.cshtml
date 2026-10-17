@@ -624,6 +624,7 @@
     <script>
         $(function () {
             var defaultHint = "Ürün seçildiğinde mevcut stok gösterilir.";
+            var message = $("#orderMessage");
 
             function updateSummary() {
                 var count = $("#orderLines .co-line").length;
@@ -656,6 +657,83 @@
                 line.find(".co-stock-label").removeClass("ok low empty").text(defaultHint);
             }
 
+            function updateStockHint(line) {
+                var select = line.find(".co-select");
+                var selectedOption = select.find("option:selected");
+                var quantityInput = line.find(".co-qty");
+                var label = line.find(".co-stock-label");
+                var productId = select.val();
+                var stockValue = selectedOption.attr("data-stock");
+
+                label.removeClass("ok low empty");
+
+                if (!productId || stockValue === undefined || stockValue === "") {
+                    label.text(defaultHint);
+                    quantityInput.removeAttr("max");
+                    return;
+                }
+
+                var stock = parseInt(stockValue, 10);
+                var quantity = parseInt(quantityInput.val(), 10);
+
+                // max niteliği, tarayıcının kendi mesajını form gönderiminden önce
+                // göstermesine neden olur. Stok sınırını özel mesajla doğruluyoruz.
+                quantityInput.removeAttr("max");
+
+                if (stock === 0) {
+                    label.text("Bu ürün stokta yok; sipariş verilemez.");
+                    label.addClass("empty");
+                } else if (!isNaN(quantity) && quantity > stock) {
+                    label.text("Yetersiz stok: mevcut " + stock + ", istenen " + quantity + " adet.");
+                    label.addClass("empty");
+                } else {
+                    label.text("Mevcut stok: " + stock + " adet");
+                    label.addClass(stock <= 5 ? "low" : "ok");
+                }
+            }
+
+            function getStockError() {
+                var requestedItems = {};
+
+                $("#orderLines .co-line").each(function () {
+                    var line = $(this);
+                    var select = line.find(".co-select");
+                    var productId = select.val();
+                    var selectedOption = select.find("option:selected");
+                    var stock = parseInt(selectedOption.attr("data-stock"), 10);
+                    var quantity = parseInt(line.find(".co-qty").val(), 10);
+
+                    if (!productId || isNaN(stock) || isNaN(quantity)) {
+                        return;
+                    }
+
+                    if (!requestedItems[productId]) {
+                        requestedItems[productId] = {
+                            name: $.trim(selectedOption.text()),
+                            stock: stock,
+                            quantity: 0
+                        };
+                    }
+
+                    requestedItems[productId].quantity += quantity;
+                });
+
+                for (var productId in requestedItems) {
+                    var item = requestedItems[productId];
+
+                    if (item.stock === 0) {
+                        return item.name + " için stokta ürün yok. Bu ürün siparişe eklenemez.";
+                    }
+
+                    if (item.quantity > item.stock) {
+                        return item.name + " için yeterli stok yok. Mevcut stok: "
+                            + item.stock + ", istenen adet: " + item.quantity + ".";
+                    }
+                }
+
+                return null;
+            }
+
             $("#addLine").on("click", function () {
                 var newLine = $("#orderLines .co-line:first").clone();
                 resetLine(newLine);
@@ -671,25 +749,15 @@
             });
 
             $("#orderLines").on("change", ".co-select", function () {
-                var line = $(this).closest(".co-line");
-                var stock = $(this).find("option:selected").attr("data-stock");
-                var label = line.find(".co-stock-label");
-                var qty = line.find(".co-qty");
-
-                label.removeClass("ok low empty");
-
-                if (stock !== undefined && stock !== "") {
-                    var s = parseInt(stock, 10);
-                    label.text("Mevcut stok: " + s + " adet");
-                    label.addClass(s === 0 ? "empty" : (s <= 5 ? "low" : "ok"));
-                    qty.attr("max", s);
-                } else {
-                    label.text(defaultHint);
-                    qty.removeAttr("max");
-                }
+                updateStockHint($(this).closest(".co-line"));
+                message.removeClass("success error").hide().text("");
             });
 
-            $("#orderLines").on("input change", ".co-qty", updateSummary);
+            $("#orderLines").on("input change", ".co-qty", function () {
+                updateStockHint($(this).closest(".co-line"));
+                updateSummary();
+                message.removeClass("success error").hide().text("");
+            });
             $("#CustomerName").on("input", updateSummary);
 
             $("#orderForm").on("submit", function (e) {
@@ -697,9 +765,14 @@
 
                 var form = $(this);
                 var submitButton = form.find(".co-btn-submit");
-                var message = $("#orderMessage");
 
                 message.removeClass("success error").hide().text("");
+
+                var stockError = getStockError();
+                if (stockError) {
+                    message.addClass("error").text(stockError).show();
+                    return;
+                }
 
                 // Tarayıcının zorunlu alan kontrollerini de koru.
                 if (this.checkValidity && !this.checkValidity()) {
