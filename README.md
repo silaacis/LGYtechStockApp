@@ -279,4 +279,3 @@ Bu README, uygulamada tamamlanmış özellikleri ve gerçekten çalıştırılan
 | Stok hareketleri ve sipariş listesi | ✅ |
 | Anti-Forgery Token koruması | ✅ |
 | Eşzamanlı stok kontrolü (bonus) | ✅ |
-| T-SQL Stored Procedure (bonus) | ❌ Uygulanmadı |
