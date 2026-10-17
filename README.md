@@ -148,23 +148,6 @@ Seed işlemiyle aşağıdaki ürünler eklenir:
 
 > Senaryoları birbirinden bağımsız yürütün. Her senaryodan önce gerekiyorsa stokları başlangıç değerlerine döndürün. Sipariş numaraları veritabanındaki mevcut kayıtlara göre değişebilir.
 
-**Kontrol ve sıfırlama için yardımcı sorgular (SSMS):**
-
-```sql
--- Güncel stokları görmek için
-SELECT Name, Stock FROM Products;
-
--- Son stok hareketlerini görmek için
-SELECT TOP 10 * FROM StockMovements ORDER BY Id DESC;
-
--- Stokları başlangıç değerlerine döndürmek için
-UPDATE Products SET Stock = 100 WHERE Name = N'Kalem';
-UPDATE Products SET Stock = 50  WHERE Name = N'Defter';
-UPDATE Products SET Stock = 3   WHERE Name = N'Silgi';
-UPDATE Products SET Stock = 1   WHERE Name = N'Cetvel';
-UPDATE Products SET Stock = 0   WHERE Name = N'Çanta';
-```
-
 ### Senaryo A — Başarılı sipariş
 
 **Adımlar**
@@ -261,9 +244,7 @@ Son Cetvel için **yalnızca bir sipariş** başarılı oldu. Her iki istek de H
 
 - Connection string ve yerel makineye özel ayarları kendi ortamınıza göre düzenleyin.
 - Gerçek parola, token veya gizli bilgileri GitHub reposuna eklemeyin.
-- Eşzamanlılık testi yerel geliştirme ortamı içindir. Test betiğinde yerel HTTPS geliştirme sertifikası nedeniyle sertifika doğrulaması kapatılmışsa bunu üretim ortamında kullanmayın.
-- Siparişin başarılı olup olmadığı yalnızca HTTP durum koduna göre değil, JSON yanıtındaki `success` alanına göre de değerlendirilmelidir.
-
+- 
 ---
 
 ## 📌 Bilinen Kapsam
