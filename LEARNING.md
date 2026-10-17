@@ -49,8 +49,8 @@ Bu adımlardan biri hata verirse (örneğin bir üründe stok yetersizse) işlem
 | Sipariş oluşturma ve dinamik form satırları | 2 saat |
 | Transaction, stok kontrolü ve stok hareketleri | 2 saat |
 | Sipariş listesi ve stok hareketleri arayüzü | 1 saat |
-| Testler, hata ayıklama ve son kontroller | 1 saat |
-| **Toplam** | **10 saat** |
+| Testler, hata ayıklama ve son kontroller | 2 saat |
+| **Toplam** | **11 saat** |
 
 > Süreler yaklaşık değerlerdir.
 
