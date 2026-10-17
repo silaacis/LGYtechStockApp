@@ -244,7 +244,7 @@ Son Cetvel için **yalnızca bir sipariş** başarılı oldu. Her iki istek de H
 
 - Connection string ve yerel makineye özel ayarları kendi ortamınıza göre düzenleyin.
 - Gerçek parola, token veya gizli bilgileri GitHub reposuna eklemeyin.
-- 
+
 ---
 
 ## 📌 Bilinen Kapsam
