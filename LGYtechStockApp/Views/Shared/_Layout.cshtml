@@ -1,35 +1,240 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Stok Yönetim Sistemi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3149c9;
+            --primary-soft: #eef1ff;
+            --ink: #1b2437;
+            --muted: #7a8599;
+            --line: #e8ebf3;
+            --bg: #f5f7fb;
+        }
+
+        html, body {
+            font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- Navbar ---------- */
+        .app-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid var(--line);
+            box-shadow: 0 1px 8px rgba(27, 36, 55, 0.04);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .app-navbar .app-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 64px;
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.3px;
+            color: var(--ink) !important;
+            text-decoration: none !important;
+            margin-right: 36px;
+        }
+
+        .app-brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 15px;
+            background: linear-gradient(135deg, #4361ee, #7b5cf0);
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .app-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+            .app-nav .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 9px 14px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #5b667c !important;
+                text-decoration: none !important;
+                transition: background .15s, color .15s;
+            }
+
+                .app-nav .nav-link:hover {
+                    background: #f3f5fa;
+                    color: var(--ink) !important;
+                }
+
+                .app-nav .nav-link.active {
+                    background: var(--primary-soft);
+                    color: var(--primary) !important;
+                    font-weight: 600;
+                }
+
+        .app-toggler {
+            display: none;
+            margin-left: auto;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 7px 11px;
+            color: var(--ink);
+            cursor: pointer;
+        }
+
+        /* ---------- Content ---------- */
+        .app-main {
+            flex: 1;
+            padding-top: 28px;
+            padding-bottom: 40px;
+        }
+
+        .app-footer {
+            border-top: 1px solid var(--line);
+            background: #fff;
+            padding: 18px 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+            .app-footer .app-container {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+        @@media (max-width: 767px) {
+            .app-toggler {
+                display: block;
+            }
+
+            .app-navbar .app-container {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .app-collapse {
+                width: 100%;
+            }
+
+                .app-collapse:not(.show) {
+                    display: none;
+                }
+
+            .app-nav {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 10px;
+            }
+
+            .app-brand {
+                margin-right: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Stok Yönetim Sistemi", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    @{
+        var currentController = (ViewContext.RouteData.Values["controller"] ?? "").ToString();
+        Func<string, string> navClass = c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase) ? "nav-link active" : "nav-link";
+    }
+
+    <nav class="app-navbar">
+        <div class="app-container">
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="app-brand">
+                <span class="app-brand-icon"><i class="fas fa-cubes"></i></span>
+                Stok Yönetim Sistemi
+            </a>
+
+            <button type="button" class="app-toggler" aria-label="Menüyü aç/kapat" onclick="document.getElementById('appMenu').classList.toggle('show');">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Ürünler", "ProductList", "Products", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Siparişler", "OrderList", "Orders", new { area = "" }, new { @class = "nav-link" })</li>
+
+            <div class="app-collapse" id="appMenu" style="flex-grow:1;">
+                <ul class="app-nav">
+                    <li>
+                        <a class="@navClass("Products")" href="@Url.Action("ProductList", "Products", new { area = "" })">
+                            <i class="fas fa-box"></i> Ürünler
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@navClass("Orders")" href="@Url.Action("OrderList", "Orders", new { area = "" })">
+                            <i class="fas fa-shopping-cart"></i> Siparişler
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@navClass("StockMovements")" href="@Url.Action("Index", "StockMovements", new { area = "" })">
+                            <i class="fas fa-exchange-alt"></i> Stok Hareketleri
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+
+    <main class="app-main">
+        <div class="app-container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <div class="app-container">
+            <span>&copy; @DateTime.Now.Year Stok Yönetim Sistemi</span>
+            <span>Tüm hakları saklıdır.</span>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

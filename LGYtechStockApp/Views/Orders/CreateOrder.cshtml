@@ -631,3 +631,39 @@
         });
     </script>
 }
+<style>
+    .order-page { max-width:none; margin:0; color:var(--ink); }
+    .order-header { align-items:flex-end; margin-bottom:23px; }
+    .order-heading h2 { color:var(--ink); font-size:28px; letter-spacing:-.7px; }
+    .order-heading p { color:var(--muted); font-size:14px; }
+    .order-icon { border-radius:13px; color:#fff; background:linear-gradient(135deg,#4361ee,#7b5cf0); box-shadow:0 5px 14px rgba(67,97,238,.22); }
+    .order-back { border-color:var(--line); border-radius:10px; color:#536078; transition:background .15s,border-color .15s; }
+    .order-back:hover { border-color:#d6dced; background:#f8f9fc; color:var(--primary); }
+    .order-card { border-color:var(--line); border-radius:16px; box-shadow:0 4px 18px rgba(27,36,55,.04); }
+    .order-card-header { border-bottom-color:var(--line); }
+    .order-card-title { color:var(--ink); font-size:16px; }
+    .order-card-subtitle,.customer-hint { color:var(--muted); }
+    .order-count { border-radius:999px; color:var(--primary); background:var(--primary-soft); }
+    .order-label { color:#344054; }
+    .order-input { border-color:#e5e9f1; border-radius:9px; color:var(--ink); background:#f7f8fc; transition:border-color .15s,box-shadow .15s,background .15s; }
+    .order-input:focus { border-color:var(--primary); background:#fff; box-shadow:0 0 0 4px rgba(67,97,238,.11); }
+    .order-table thead { background:#fafbfe; }
+    .order-table th { color:#8590a3; font-size:11px; letter-spacing:.6px; }
+    .order-table td { border-bottom-color:#f1f3f8; }
+    .remove-line { border-color:#f0d9dc; border-radius:9px; color:#c84b55; transition:background .15s,border-color .15s; }
+    .remove-line:hover { border-color:#e9b9bf; background:#fff2f3; }
+    .add-line { border-color:#dce4ff; border-radius:9px; color:var(--primary); background:#f5f7ff; }
+    .add-line:hover { border-color:#bfcdfd; background:#eaf0ff; }
+    .order-footer { border-top-color:var(--line); background:#fcfdff; }
+    .order-footer-note { color:var(--muted); }
+    .btn-order-cancel,.btn-order-submit { min-height:44px; border-radius:10px; font-family:inherit; transition:transform .15s,box-shadow .15s,background .15s; }
+    .btn-order-cancel { border-color:var(--line); }
+    .btn-order-submit { border:0; background:linear-gradient(135deg,#4361ee,#6a4df0); box-shadow:0 6px 16px rgba(67,97,238,.24); }
+    .btn-order-submit:hover { transform:translateY(-1px); background:linear-gradient(135deg,#3b57dc,#6045dc); box-shadow:0 8px 20px rgba(67,97,238,.32); }
+    .order-message { border-radius:11px; }
+    @@media (max-width:767px) {
+        .order-page { margin:0; }
+        .order-heading h2 { font-size:24px; }
+        .order-header { align-items:flex-start; }
+    }
+</style>

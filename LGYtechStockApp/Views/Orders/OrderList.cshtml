@@ -332,7 +332,7 @@
 
         @if (orderCount > 0)
         {
-            <div class="table-responsive">
+            <div class="table-responsive orders-table-wrap">
                 <table class="table orders-table">
                     <thead>
                         <tr>
@@ -347,27 +347,23 @@
                         @foreach (var order in orders)
                         {
                             <tr>
-                                <td>
-                                    <span class="order-number">
+                                <td data-label="Sipariş No"><span class="order-number">
                                         #@order.OrderId
                                     </span>
                                 </td>
-                                <td>
-                                    <span class="order-customer">
+                                <td data-label="Müşteri"><span class="order-customer">
                                         @order.CustomerName
                                     </span>
                                 </td>
-                                <td>
-                                    <span class="order-date">
+                                <td data-label="Sipariş Tarihi"><span class="order-date">
                                         @order.CreatedAt.ToString("dd.MM.yyyy HH:mm")
                                     </span>
                                 </td>
-                                <td>
-                                    <span class="order-line-count">
+                                <td class="order-line-count-cell" data-label="Satır Sayısı"><span class="order-line-count">
                                         @order.OrderLineCount
                                     </span>
                                 </td>
-                                <td class="order-total">
+                                <td class="order-total" data-label="Toplam Tutar">
                                     <span>
                                         @order.Total.ToString("N2") ₺
                                     </span>
@@ -393,4 +389,102 @@
         }
     </div>
 </div>
-```
+<style>
+    .orders-page.container { width:100%; max-width:none; margin:0; padding:0 0 26px; color:var(--ink); }
+    .orders-eyebrow { color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.55px; text-transform:uppercase; }
+    .orders-title { color:var(--ink); font-size:28px; font-weight:700; letter-spacing:-.7px; }
+    .orders-subtitle { color:var(--muted); font-size:14px; }
+    .btn-new-order { border:0; border-radius:10px; color:#fff!important; background:linear-gradient(135deg,#4361ee,#6a4df0); box-shadow:0 6px 16px rgba(67,97,238,.24); transition:transform .15s,box-shadow .15s; }
+    .btn-new-order:hover { color:#fff!important; transform:translateY(-1px); box-shadow:0 8px 20px rgba(67,97,238,.32); }
+    .orders-stats { gap:16px; margin-bottom:22px; }
+    .order-stat-card { border:1px solid var(--line); border-radius:14px; background:#fff; box-shadow:0 4px 18px rgba(27,36,55,.035); }
+    .order-stat-icon { color:var(--primary); background:var(--primary-soft); }
+    .order-stat-card:nth-child(2) .order-stat-icon { color:#7855d9; background:#f2edff; }
+    .order-stat-label { color:var(--muted); }
+    .order-stat-value { color:var(--ink); font-size:24px; letter-spacing:-.4px; }
+    .orders-table-card { border:1px solid var(--line); border-radius:16px; box-shadow:0 4px 18px rgba(27,36,55,.04); }
+    .orders-table-header { border-bottom:1px solid var(--line); }
+    .orders-table-title { color:var(--ink); font-size:17px; }
+    .orders-count { border-radius:999px; color:var(--primary); background:var(--primary-soft); }
+    .orders-table { margin-bottom:0; color:var(--ink); }
+    .orders-table thead th { padding:14px 22px; border-top:0; border-bottom:1px solid var(--line); color:#8590a3; background:#fafbfe; font-size:11px; letter-spacing:.65px; text-transform:uppercase; white-space:nowrap; }
+    .orders-table tbody td { padding:15px 22px; border-top:0; border-bottom:1px solid #f1f3f8; color:#536078; vertical-align:middle; }
+    .orders-table tbody tr:last-child td { border-bottom:0; }
+    .orders-table tbody tr:hover { background:#fafbff; }
+    .order-number { border:1px solid #e6eaff; border-radius:7px; color:var(--primary); background:#f5f6ff; font-family:Consolas,'SFMono-Regular',monospace; font-weight:700; }
+    .order-customer { color:var(--ink); font-weight:600; }
+    .order-date { color:#536078; }
+    .order-line-count { border-radius:9px; color:#5b667c; background:#f2f4f9; font-weight:700; }
+    .order-total { color:var(--ink); font-weight:700; }
+    .orders-empty { padding:52px 20px; }
+    .orders-empty-icon { color:var(--primary); background:var(--primary-soft); }
+    .orders-empty h3 { color:var(--ink); }
+    .orders-empty p { color:var(--muted); }
+    @@media (max-width:767px) {
+        .orders-title { font-size:24px; }
+        .orders-table thead th,.orders-table tbody td { padding-right:14px; padding-left:14px; }
+    }
+</style>
+<style>
+    @@media (max-width:767px) {
+        .orders-table-wrap {
+            overflow-x: visible;
+        }
+
+        .orders-table.table {
+            display: block;
+            width: 100%;
+            margin: 0;
+        }
+
+        .orders-table thead {
+            display: none;
+        }
+
+        .orders-table tbody {
+            display: block;
+            width: 100%;
+        }
+
+        .orders-table tbody tr {
+            display: block;
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .orders-table tbody tr:last-child {
+            border-bottom: 0;
+        }
+
+        .orders-table.table tbody td {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 8px 0;
+            border: 0;
+            text-align: right !important;
+        }
+
+        .orders-table tbody td::before {
+            content: attr(data-label);
+            flex: 0 0 112px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .45px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        .orders-table tbody td > span {
+            max-width: calc(100% - 124px);
+            overflow-wrap: anywhere;
+        }
+
+        .orders-table tbody td.order-line-count-cell {
+            justify-content: space-between;
+        }
+    }
+</style>

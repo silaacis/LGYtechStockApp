@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\StockMovementsController.cs" />
     <Compile Include="Data\StockDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -239,6 +240,7 @@
     <Content Include="Views\Products\EditProduct.cshtml" />
     <Content Include="Views\Orders\CreateOrder.cshtml" />
     <Content Include="Views\Orders\OrderList.cshtml" />
+    <Content Include="Views\StockMovements\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

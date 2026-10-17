@@ -1,268 +1,592 @@
-﻿
-@model LGYtechStockApp.ViewModels.ProductFormViewModel
+﻿@model LGYtechStockApp.ViewModels.ProductFormViewModel
 
 @{
     ViewBag.Title = "Ürün Güncelle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid py-4 px-3 px-md-4 product-page">
+<div class="pf-page">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div class="pf-header">
         <div>
-            <div class="text-muted small mb-1">STOK YÖNETİMİ / ÜRÜNLER / ÜRÜN GÜNCELLE</div>
-            <h2 class="page-title mb-1">Ürün Güncelle</h2>
-            <p class="text-muted mb-0">Güncellenecek ürünün bilgilerini ve stok miktarını gir.</p>
+            <div class="pf-crumb">Stok Yönetimi <span>/</span> Ürünler <span>/</span> Ürün Güncelle</div>
+            <h1 class="pf-title">Ürün Güncelle</h1>
+            <p class="pf-desc">Ürünün bilgilerini ve stok miktarını güncelle.</p>
         </div>
 
-        <a href="@Url.Action("ProductList", "Products")"
-           class="btn btn-back mt-3 mt-md-0">
-            &larr; Ürün Listesine Dön
+        <a href="@Url.Action("ProductList", "Products")" class="pf-btn-back">
+            <i class="fas fa-arrow-left"></i> Ürün Listesine Dön
         </a>
     </div>
 
-    <div class="form-card">
-        <div class="form-card-header">
-            <div class="d-flex align-items-center">
-                <div class="form-icon">
-                    <i class="fas fa-box-open"></i>
-                </div>
+    <div class="pf-grid">
+
+        <!-- Form -->
+        <div class="pf-card">
+            <div class="pf-card-head">
+                <div class="pf-card-icon"><i class="fas fa-pen"></i></div>
                 <div>
-                    <h5 class="mb-1 font-weight-bold">Ürün Bilgileri</h5>
-                    <span class="text-muted small">Yıldız (*) bulunan alanların doldurulması zorunludur.</span>
+                    <h2 class="pf-card-title">Ürün Bilgileri <span class="pf-chip">#@Model.Id</span></h2>
+                    <span class="pf-card-sub">Yıldız (*) bulunan alanların doldurulması zorunludur.</span>
                 </div>
             </div>
-        </div>
 
-        @using (Html.BeginForm("EditProduct", "Products", new { id = Model.Id }, FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-body">
+            @using (Html.BeginForm("EditProduct", "Products", new { id = Model.Id }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
                 <input type="hidden" id="Id" name="Id" value="@Model.Id" />
 
-                <div class="form-group">
-                    <label for="Name" class="form-label">Ürün Adı *</label>
-                    <input type="text"
-                           id="Name"
-                           name="Name"
-                           class="form-control custom-input"
-                           placeholder="Örn. Kalem"
-                           value="@Model.Name" />
+                <div class="pf-body">
+                    <div class="pf-fields">
 
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "field-error" })
-                </div>
-
-                <div class="form-group">
-                    <label for="Sku" class="form-label">SKU *</label>
-                    <input type="text"
-                           id="Sku"
-                           name="Sku"
-                           class="form-control custom-input"
-                           placeholder="Örn. URUN-006"
-                           value="@Model.Sku" />
-
-                    @Html.ValidationMessageFor(m => m.Sku, "", new { @class = "field-error" })
-                    <small class="form-hint">Her ürün için benzersiz bir stok kodu gir.</small>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Price" class="form-label">Birim Fiyat (₺) *</label>
-                            <input type="text"
-                                   id="Price"
-                                   name="Price"
-                                   class="form-control custom-input"
-                                   inputmode="decimal"
-                                   placeholder="Örn. 400,50"
-                                   value="@Model.Price.ToString("0.00", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))" />
-
-                            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "field-error" })
+                        <div class="pf-field">
+                            <label for="Name" class="pf-label">Ürün Adı *</label>
+                            <input type="text" id="Name" name="Name" class="pf-input"
+                                   placeholder="Örn. Kalem" value="@Model.Name" autocomplete="off" />
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "pf-error" })
                         </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="Stock" class="form-label">Başlangıç Stoğu *</label>
-                            <input type="number"
-                                   id="Stock"
-                                   name="Stock"
-                                   class="form-control custom-input"
-                                   min="0"
-                                   step="1"
-                                   placeholder="Örn. 100"
-                                   value="@Model.Stock" />
-
-                            @Html.ValidationMessageFor(m => m.Stock, "", new { @class = "field-error" })
+                        <div class="pf-field">
+                            <label for="Sku" class="pf-label">SKU *</label>
+                            <input type="text" id="Sku" name="Sku" class="pf-input"
+                                   placeholder="Örn. URUN-006" value="@Model.Sku" autocomplete="off" />
+                            @Html.ValidationMessageFor(m => m.Sku, "", new { @class = "pf-error" })
+                            <small class="pf-hint">Her ürün için benzersiz bir stok kodu gir.</small>
                         </div>
+
+                        <div class="pf-field">
+                            <label for="Price" class="pf-label">Birim Fiyat *</label>
+                            <div class="pf-affix">
+                                <span class="pf-affix-text">₺</span>
+                                <input type="text" id="Price" name="Price" class="pf-input pf-input-affix"
+                                       inputmode="decimal" placeholder="400,50"
+                                       value="@Model.Price.ToString("0.00", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))" />
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "pf-error" })
+                        </div>
+
+                        <div class="pf-field">
+                            <label for="Stock" class="pf-label">Stok Miktarı *</label>
+                            <div class="pf-affix">
+                                <input type="number" id="Stock" name="Stock" class="pf-input pf-input-affix-r"
+                                       min="0" step="1" placeholder="100" value="@Model.Stock" />
+                                <span class="pf-affix-text pf-affix-right">adet</span>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Stock, "", new { @class = "pf-error" })
+                        </div>
+
                     </div>
                 </div>
 
+                <div class="pf-footer">
+                    <a href="@Url.Action("ProductList", "Products")" class="pf-btn-cancel">Vazgeç</a>
+                    <button type="submit" class="pf-btn-save">
+                        <i class="fas fa-check"></i> Değişiklikleri Kaydet
+                    </button>
+                </div>
+            }
+        </div>
+
+        <!-- Canlı önizleme -->
+        <aside class="pf-aside">
+            <div class="pf-card pf-preview">
+                <div class="pf-aside-label">Canlı Önizleme</div>
+
+                <div class="pf-pv-top">
+                    <div class="pf-pv-avatar" id="pvAvatar">?</div>
+                    <div class="pf-pv-names">
+                        <div class="pf-pv-name" id="pvName">Ürün adı</div>
+                        <div class="pf-pv-sub">Ürün #@Model.Id</div>
+                    </div>
+                </div>
+
+                <div class="pf-pv-row"><span>SKU</span><span class="pf-pv-sku" id="pvSku">—</span></div>
+                <div class="pf-pv-row"><span>Birim Fiyat</span><strong id="pvPrice">—</strong></div>
+                <div class="pf-pv-row"><span>Stok Durumu</span><span class="pf-badge" id="pvStock">—</span></div>
             </div>
 
-            <div class="form-footer">
-                <a href="@Url.Action("ProductList", "Products")" class="btn btn-cancel">
-                    Vazgeç
-                </a>
-
-                <button type="submit" class="btn btn-save">
-                    <i class="fas fa-check mr-1"></i> Ürünü Kaydet
-                </button>
+            <div class="pf-tip">
+                <i class="fas fa-lightbulb"></i>
+                <div>Stok miktarı <strong>5 ve altında</strong> olduğunda ürün listede <strong>"Kritik Stok"</strong> olarak işaretlenir.</div>
             </div>
-        }
+        </aside>
+
     </div>
 </div>
 
 <style>
-    .product-page {
-        background: #f7f8fc;
-        min-height: calc(100vh - 60px);
-        color: #202938;
+    .pf-page {
+        color: var(--ink);
     }
 
-    .page-title {
-        font-size: 27px;
-        font-weight: 700;
-        letter-spacing: -0.6px;
+    /* Header */
+    .pf-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 24px;
     }
 
-    .btn-back {
-        background: #fff;
-        color: #536078;
-        border: 1px solid #e2e7ef;
-        border-radius: 8px;
-        padding: 10px 16px;
+    .pf-crumb {
+        font-size: 12px;
         font-weight: 600;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
     }
 
-        .btn-back:hover,
-        .btn-cancel:hover {
-            background: #f2f4f8;
-            color: #263247;
+        .pf-crumb span {
+            margin: 0 4px;
+            opacity: .5;
         }
 
-    .form-card {
+    .pf-title {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.7px;
+        margin: 0 0 4px;
+    }
+
+    .pf-desc {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .pf-btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #536078 !important;
         background: #fff;
-        border: 1px solid #edf0f5;
-        border-radius: 12px;
+        border: 1px solid var(--line);
+        text-decoration: none !important;
+        transition: background .15s;
+    }
+
+        .pf-btn-back:hover {
+            background: #f2f4f9;
+        }
+
+        .pf-btn-back i {
+            font-size: 12px;
+        }
+
+    /* Layout */
+    .pf-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .pf-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 3px 12px rgba(28, 39, 60, 0.025);
-        max-width: 900px;
+        box-shadow: 0 4px 18px rgba(27, 36, 55, 0.04);
     }
 
-    .form-card-header {
-        padding: 22px 24px;
-        border-bottom: 1px solid #edf0f5;
+    .pf-card-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 22px 28px;
+        border-bottom: 1px solid var(--line);
     }
 
-    .form-icon {
-        width: 44px;
-        height: 44px;
+    .pf-card-icon {
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #edf1ff;
-        color: #3659d9;
-        border-radius: 10px;
-        font-size: 18px;
-        margin-right: 14px;
+        border-radius: 12px;
+        font-size: 17px;
+        color: var(--primary);
+        background: var(--primary-soft);
     }
 
-    .form-body {
-        padding: 25px 24px 10px;
+    .pf-card-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 3px;
+        letter-spacing: -0.2px;
     }
 
-    .form-label {
+    .pf-card-sub {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .pf-chip {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 3px 9px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #5b667c;
+        background: #f2f4f9;
+        vertical-align: middle;
+    }
+
+    /* Fields: 2x2 */
+    .pf-body {
+        padding: 28px;
+    }
+
+    .pf-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 26px 22px;
+    }
+
+    .pf-field {
+        min-width: 0;
+    }
+
+    .pf-label {
         display: block;
-        color: #344054;
         font-size: 13px;
         font-weight: 600;
-        margin-bottom: 8px;
+        color: #344054;
+        margin: 0 0 8px;
     }
 
-    .custom-input {
-        height: 44px;
-        border: 1px solid #e2e7ef;
-        border-radius: 8px;
-        padding: 10px 13px;
+    .pf-input {
+        display: block;
+        width: 100%;
+        height: 48px;
+        padding: 0 14px;
+        margin: 0;
+        font-family: inherit;
         font-size: 14px;
-        box-shadow: none;
+        color: var(--ink);
+        background: #f6f8fc;
+        border: 1px solid #f6f8fc;
+        border-radius: 10px;
+        outline: none;
+        transition: background .15s, border-color .15s, box-shadow .15s;
     }
 
-        .custom-input:focus {
-            border-color: #7890ec;
-            box-shadow: 0 0 0 3px rgba(54, 89, 217, 0.08);
+        .pf-input::placeholder {
+            color: #a3acbd;
         }
 
-    .form-hint {
-        display: block;
-        color: #929bad;
-        font-size: 11px;
-        margin-top: 6px;
+        .pf-input:focus {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+        }
+
+        .pf-input.input-validation-error {
+            background: #fff7f7;
+            border-color: #e5525c;
+        }
+
+    .pf-affix {
+        position: relative;
     }
 
-    .field-error {
-        display: block;
-        color: #c8444c;
-        font-size: 12px;
-        margin-top: 5px;
+    .pf-affix-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 48px;
+        width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #7a8599;
+        pointer-events: none;
     }
 
-    .validation-summary {
-        color: #c8444c;
+    .pf-affix-right {
+        left: auto;
+        right: 0;
+        width: 56px;
         font-size: 13px;
-        margin-bottom: 15px;
+        font-weight: 500;
     }
 
-        .validation-summary:empty {
-            display: none;
-        }
+    .pf-input-affix {
+        padding-left: 42px;
+    }
 
-    .form-footer {
+    .pf-input-affix-r {
+        padding-right: 56px;
+    }
+
+    .pf-hint {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        color: #9aa4b6;
+    }
+
+    .pf-error {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #c63f49;
+    }
+
+    /* Footer */
+    .pf-footer {
         display: flex;
         justify-content: flex-end;
         gap: 10px;
-        padding: 18px 24px;
-        border-top: 1px solid #edf0f5;
-        background: #fcfcfe;
+        padding: 18px 28px;
+        border-top: 1px solid var(--line);
+        background: #fcfdff;
     }
 
-    .btn-cancel,
-    .btn-save {
-        border-radius: 8px;
-        padding: 10px 17px;
-        font-size: 13px;
+    .pf-btn-cancel, .pf-btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14px;
         font-weight: 600;
+        cursor: pointer;
+        text-decoration: none !important;
+        transition: all .15s;
     }
 
-    .btn-cancel {
+    .pf-btn-cancel {
+        color: #536078 !important;
         background: #fff;
-        color: #536078;
-        border: 1px solid #e2e7ef;
+        border: 1px solid var(--line);
     }
 
-    .btn-save {
-        background: #3659d9;
+        .pf-btn-cancel:hover {
+            background: #f2f4f9;
+        }
+
+    .pf-btn-save {
         color: #fff;
-        border: 1px solid #3659d9;
-        box-shadow: 0 4px 10px rgba(54, 89, 217, 0.12);
+        border: 0;
+        background: linear-gradient(135deg, #4361ee, #6a4df0);
+        box-shadow: 0 6px 16px rgba(67, 97, 238, 0.28);
     }
 
-        .btn-save:hover {
-            background: #2948bd;
-            color: #fff;
+        .pf-btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.36);
         }
 
-    @@media (max-width: 767px) {
-        .form-card-header,
-        .form-body {
-            padding: 18px 16px;
+    /* Preview */
+    .pf-aside {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: sticky;
+        top: 88px;
+    }
+
+    .pf-preview {
+        padding: 22px;
+    }
+
+    .pf-aside-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        color: #8590a3;
+        margin-bottom: 16px;
+    }
+
+    .pf-pv-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 18px;
+        margin-bottom: 6px;
+        border-bottom: 1px dashed var(--line);
+    }
+
+    .pf-pv-avatar {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #4361ee, #7b5cf0);
+    }
+
+    .pf-pv-names {
+        min-width: 0;
+    }
+
+    .pf-pv-name {
+        font-size: 16px;
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .pf-pv-sub {
+        font-size: 12px;
+        color: #9aa4b6;
+        margin-top: 2px;
+    }
+
+    .pf-pv-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid #f1f3f8;
+    }
+
+        .pf-pv-row:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
         }
 
-        .form-footer {
-            padding: 15px 16px;
+        .pf-pv-row strong {
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+    .pf-pv-sku {
+        font-family: Consolas, monospace;
+        font-size: 12px;
+        font-weight: 600;
+        color: #5b667c;
+        background: #f2f4f9;
+        padding: 4px 9px;
+        border-radius: 6px;
+    }
+
+    .pf-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #7a8599;
+        background: #f2f4f9;
+    }
+
+        .pf-badge.ok {
+            color: #178457;
+            background: #e7f7ee;
+        }
+
+        .pf-badge.low {
+            color: #a8680a;
+            background: #fff3d9;
+        }
+
+        .pf-badge.empty {
+            color: #c63f49;
+            background: #ffebed;
+        }
+
+    .pf-tip {
+        display: flex;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #4a5670;
+        background: var(--primary-soft);
+    }
+
+        .pf-tip i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+    @@media (max-width: 991px) {
+        .pf-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pf-aside {
+            position: static;
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .pf-title {
+            font-size: 24px;
+        }
+
+        .pf-card-head, .pf-body, .pf-footer {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .pf-fields {
+            grid-template-columns: 1fr;
+            gap: 22px;
         }
     }
 </style>
 
+@section scripts {
+    <script>
+        (function () {
+            var name = document.getElementById('Name');
+            var sku = document.getElementById('Sku');
+            var price = document.getElementById('Price');
+            var stock = document.getElementById('Stock');
+
+            var pvName = document.getElementById('pvName');
+            var pvAvatar = document.getElementById('pvAvatar');
+            var pvSku = document.getElementById('pvSku');
+            var pvPrice = document.getElementById('pvPrice');
+            var pvStock = document.getElementById('pvStock');
+
+            function update() {
+                var n = name.value.trim();
+                pvName.textContent = n || 'Ürün adı';
+                pvAvatar.textContent = n ? n.charAt(0).toLocaleUpperCase('tr-TR') : '?';
+                pvSku.textContent = sku.value.trim() || '—';
+
+                var p = parseFloat((price.value || '').replace(',', '.'));
+                pvPrice.textContent = isNaN(p)
+                    ? '—'
+                    : p.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₺';
+
+                var s = parseInt(stock.value, 10);
+                pvStock.className = 'pf-badge';
+                if (isNaN(s)) { pvStock.textContent = '—'; }
+                else if (s === 0) { pvStock.textContent = 'Stokta Yok'; pvStock.classList.add('empty'); }
+                else if (s <= 5) { pvStock.textContent = 'Kritik Stok (' + s + ')'; pvStock.classList.add('low'); }
+                else { pvStock.textContent = 'Stokta Var (' + s + ')'; pvStock.classList.add('ok'); }
+            }
+
+            [name, sku, price, stock].forEach(function (el) { el.addEventListener('input', update); });
+            update();
+        })();
+    </script>
+}
